@@ -1,0 +1,21 @@
+{
+  "name": "Moodini",
+  "homepage": "https://github.com/McPringle/moodini",
+  "description": "MOOD Application",
+  "main": "",
+  "moduleType": [],
+  "private": true,
+  "license": "AGPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/webapp",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.4.0",
+    "paper-elements": "PolymerElements/paper-elements#~1.0.7"
+  }
+}
