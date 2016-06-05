@@ -20,6 +20,11 @@
             <url>https://www.fihlon.ch/</url>
         </developer>
     </developers>
+    <contributors>
+        <contributor>
+            <name>Patrick Reimers</name>
+        </contributor>
+    </contributors>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/McPringle/moodini/issues</url>
