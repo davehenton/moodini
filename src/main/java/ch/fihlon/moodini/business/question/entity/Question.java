@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -23,6 +24,7 @@ public class Question implements Serializable {
 
     private Long version;
 
+    @NotEmpty
     @Length(max=100)
     private String question;
 

@@ -4,9 +4,6 @@ import ch.fihlon.moodini.business.question.control.QuestionService;
 import ch.fihlon.moodini.business.question.entity.Question;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ResponseHeader;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
@@ -33,25 +30,37 @@ public class QuestionsResource {
 
     private QuestionService questionService;
 
+    private QuestionResource questionResource;
+
     @Inject
-    public QuestionsResource(@NotNull final QuestionService questionService) {
+    public QuestionsResource(@NotNull final QuestionService questionService,
+                             @NotNull final QuestionResource questionResource) {
         this.questionService = questionService;
+        this.questionResource = questionResource;
     }
 
     /**
      * Get a list of all questions
      *
      * @return a list of all questions
+     * @successResponse 200 Successful request
      */
     @GET
     public List<Question> findAll() {
         return questionService.findAll();
     }
 
+    @Path("{questionId}")
+    public QuestionResource getQuestionResource() {
+        return questionResource;
+    }
+
     /**
      * Get the latest question available
      *
      * @return the latest question or a <code>404 NOT FOUND</code> if there is no question available
+     * @successResponse 200 The latest question `ch.fihlon.moodini.business.question.entity.Question
+     * @errorResponse 404 There is no question available
      */
     @Path("latest")
     @GET
@@ -65,11 +74,9 @@ public class QuestionsResource {
      * @param newQuestion the question to create
      * @param uriInfo information about the URI of the request
      * @return a <code>201 CREATED</code> and the location of the created question
+     * @successResponse 201 The question was successfully created
+     * @errorResponse 400 There was no question in the request
      */
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Question created successfully", responseHeaders = @ResponseHeader(name = "Location", description = "The location of the created question", response = URI.class)),
-            @ApiResponse(code = 400, message = "The data of the question is not valid")
-    })
     @POST
     public Response createQuestion(@Valid final Question newQuestion,
                                    @Context UriInfo uriInfo) {

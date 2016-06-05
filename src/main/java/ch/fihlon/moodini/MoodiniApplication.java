@@ -1,6 +1,5 @@
 package ch.fihlon.moodini;
 
-import ch.fihlon.moodini.business.question.boundary.QuestionResource;
 import ch.fihlon.moodini.business.question.boundary.QuestionsResource;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
@@ -44,8 +43,6 @@ public class MoodiniApplication extends Application<MoodiniConfiguration> {
         final Injector injector = createInjector(configuration, environment);
         final QuestionsResource questionsResource = injector.getInstance(QuestionsResource.class);
         environment.jersey().register(questionsResource);
-        final QuestionResource questionResource = injector.getInstance(QuestionResource.class);
-        environment.jersey().register(questionResource);
     }
 
     private static void registerModules(@NotNull final ObjectMapper objectMapper) {
