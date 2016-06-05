@@ -21,6 +21,7 @@ import ch.fihlon.moodini.OptimisticLockException;
 import ch.fihlon.moodini.business.question.entity.Question;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.NotFoundException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,9 @@ class QuestionRepository implements Serializable {
     }
 
     void delete(final Long questionId) {
+        if (!questions.containsKey(questionId)) {
+            throw new NotFoundException();
+        }
         // TODO delete only questions without answers/votes
         this.questions.remove(questionId);
     }

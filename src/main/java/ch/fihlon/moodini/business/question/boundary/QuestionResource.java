@@ -67,8 +67,7 @@ public class QuestionResource {
      */
     @DELETE
     public Response delete(@PathParam("questionId") final Long questionId) {
-        final Question question = findByQuestionId(questionId); // only delete existing questions
-        questionService.delete(question.getQuestionId());
+        questionService.delete(questionId);
         return Response.noContent().build();
     }
 
