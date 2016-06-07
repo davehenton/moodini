@@ -17,12 +17,12 @@
  */
 package ch.fihlon.moodini.business.question.control;
 
-import ch.fihlon.moodini.OptimisticLockException;
 import ch.fihlon.moodini.business.question.entity.Question;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.NotFoundException;
 import java.io.Serializable;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,7 +54,7 @@ class QuestionRepository implements Serializable {
     Question update(@NotNull final Question question) {
         final Question previousQuestion = questions.getOrDefault(question.getQuestionId(), question);
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
-            throw new OptimisticLockException("You tried to update an user that was modified concurrently!");
+            throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");
         }
         final Long version = Long.valueOf(question.hashCode());
         final Question questionToUpdate = question.toBuilder()
