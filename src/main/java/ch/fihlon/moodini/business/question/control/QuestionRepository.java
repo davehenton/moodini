@@ -42,7 +42,7 @@ class QuestionRepository implements Serializable {
 
     Question create(@NotNull final Question question) {
         final Long questionId = questionSeq.incrementAndGet();
-        final Long version = Long.valueOf(question.hashCode());
+        final Long version = (long) question.hashCode();
         final Question questionToCreate = question.toBuilder()
                 .questionId(questionId)
                 .version(version)
@@ -56,7 +56,7 @@ class QuestionRepository implements Serializable {
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");
         }
-        final Long version = Long.valueOf(question.hashCode());
+        final Long version = (long) question.hashCode();
         final Question questionToUpdate = question.toBuilder()
                 .version(version)
                 .build();
