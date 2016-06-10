@@ -79,7 +79,7 @@ class QuestionRepository implements Serializable {
                 .max(comparingLong(Question::getQuestionId));
     }
 
-    void delete(final Long questionId) {
+    void delete(@NotNull final Long questionId) {
         if (!questions.containsKey(questionId)) {
             throw new NotFoundException();
         }
