@@ -19,6 +19,7 @@ package ch.fihlon.moodini.business.question.control;
 
 import ch.fihlon.moodini.AbstractLifecycleListener;
 import ch.fihlon.moodini.PersistenceManager;
+import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
@@ -83,5 +84,10 @@ public class QuestionService {
 
     public void delete(@NotNull final Long userId) {
         controller.execute((mgr) -> mgr.delete(userId));
+    }
+
+    public Long vote(@NotNull final Long questionId,
+                     @NotNull final Answer answer) {
+        return controller.executeAndQuery((mgr) -> mgr.vote(questionId, answer));
     }
 }

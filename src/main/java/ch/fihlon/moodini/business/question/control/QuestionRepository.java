@@ -17,6 +17,7 @@
  */
 package ch.fihlon.moodini.business.question.control;
 
+import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
 
 import javax.validation.constraints.NotNull;
@@ -37,6 +38,7 @@ class QuestionRepository implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Long, Question> questions = new ConcurrentHashMap<>();
+    private final Map<Long, Map<Answer, AtomicLong>> votes = new ConcurrentHashMap<>();
 
     private final AtomicLong questionSeq = new AtomicLong(0);
 
@@ -83,7 +85,35 @@ class QuestionRepository implements Serializable {
         if (!questions.containsKey(questionId)) {
             throw new NotFoundException();
         }
-        // TODO delete only questions without answers/votes
+        // TODO delete only questions without votes
         this.questions.remove(questionId);
+    }
+
+    Long vote(@NotNull Long questionId,
+              @NotNull Answer answer) {
+        if (!questions.containsKey(questionId)) {
+            throw new NotFoundException();
+        }
+        final AtomicLong counter = getCounter(questionId, answer);
+        return counter.incrementAndGet();
+    }
+
+    private AtomicLong getCounter(@NotNull final Long questionId, @NotNull final Answer answer) {
+        final Map<Answer, AtomicLong> answers = getAnswers(questionId);
+        if (!answers.containsKey(answer)) {
+            synchronized (answers) {
+                answers.putIfAbsent(answer, new AtomicLong(0));
+            }
+        }
+        return answers.get(answer);
+    }
+
+    private Map<Answer, AtomicLong> getAnswers(@NotNull final Long questionId) {
+        if (!votes.containsKey(questionId)) {
+            synchronized (votes) {
+                votes.putIfAbsent(questionId, new ConcurrentHashMap<>());
+            }
+        }
+        return votes.get(questionId);
     }
 }

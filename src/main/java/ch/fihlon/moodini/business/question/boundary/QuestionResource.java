@@ -18,6 +18,7 @@
 package ch.fihlon.moodini.business.question.boundary;
 
 import ch.fihlon.moodini.business.question.control.QuestionService;
+import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
@@ -28,6 +29,8 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -69,6 +72,21 @@ public class QuestionResource {
     public Response delete(@PathParam("questionId") final Long questionId) {
         questionService.delete(questionId);
         return Response.noContent().build();
+    }
+
+    /**
+     * Vote for the specific answer of a specific question
+     *
+     * @return a <code>200 OK</code> for a successful vote
+     * @successResponse 204 The vote was successful
+     * @errorResponse 404 The question does not exist
+     */
+    @Path("vote")
+    @POST
+    public Response vote(@PathParam("questionId") final Long questionId,
+                         @NotNull final Answer answer) {
+        questionService.vote(questionId, answer);
+        return Response.ok().build();
     }
 
 }
