@@ -75,17 +75,6 @@ public class UsersResource {
     }
 
     /**
-     * Get a list of all users
-     *
-     * @return a list of all users
-     * @successResponse 200 Successful request
-     */
-    @GET
-    public List<User> readAll() {
-        return userService.readAll();
-    }
-
-    /**
      * Get the user with the specified id
      *
      * @return the user with the specified id or a <code>404 NOT FOUND</code> if there is no user available
@@ -99,6 +88,17 @@ public class UsersResource {
     }
 
     /**
+     * Get a list of all users
+     *
+     * @return a list of all users
+     * @successResponse 200 Successful request
+     */
+    @GET
+    public List<User> readAll() {
+        return userService.readAll();
+    }
+
+    /**
      * Update an existing user
      *
      * @param user the user to update
@@ -106,9 +106,14 @@ public class UsersResource {
      * @successResponse 200 The user was successfully updated
      * @errorResponse 400 The user data in the request was invalid
      */
+    @Path("{userId}")
     @PUT
-    public Response update(@Valid final User user) {
-        final User savedUser = userService.update(user);
+    public Response update(@PathParam("userId") final Long userId,
+                           @Valid final User user) {
+        final User newUser = user.toBuilder()
+                .userId(userId)
+                .build();
+        final User savedUser = userService.update(newUser);
         return Response.ok(savedUser).build();
     }
 

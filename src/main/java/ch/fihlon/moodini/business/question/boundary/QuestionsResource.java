@@ -18,6 +18,7 @@
 package ch.fihlon.moodini.business.question.boundary;
 
 import ch.fihlon.moodini.business.question.control.QuestionService;
+import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
@@ -26,9 +27,13 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -47,42 +52,9 @@ public class QuestionsResource {
 
     private QuestionService questionService;
 
-    private QuestionResource questionResource;
-
     @Inject
-    public QuestionsResource(@NotNull final QuestionService questionService,
-                             @NotNull final QuestionResource questionResource) {
+    public QuestionsResource(@NotNull final QuestionService questionService) {
         this.questionService = questionService;
-        this.questionResource = questionResource;
-    }
-
-    /**
-     * Get a list of all questions
-     *
-     * @return a list of all questions
-     * @successResponse 200 Successful request
-     */
-    @GET
-    public List<Question> findAll() {
-        return questionService.findAll();
-    }
-
-    @Path("{questionId}")
-    public QuestionResource getQuestionResource() {
-        return questionResource;
-    }
-
-    /**
-     * Get the latest question available
-     *
-     * @return the latest question or a <code>404 NOT FOUND</code> if there is no question available
-     * @successResponse 200 The latest question `ch.fihlon.moodini.business.question.entity.Question
-     * @errorResponse 404 There is no question available
-     */
-    @Path("latest")
-    @GET
-    public Question findLatest() {
-        return questionService.findLatest();
     }
 
     /**
@@ -95,12 +67,96 @@ public class QuestionsResource {
      * @errorResponse 400 There was no question in the request
      */
     @POST
-    public Response createQuestion(@Valid final Question newQuestion,
-                                   @Context UriInfo uriInfo) {
+    public Response create(@Valid final Question newQuestion,
+                           @Context UriInfo uriInfo) {
         final Question savedQuestion = questionService.create(newQuestion);
         final Long questionId = savedQuestion.getQuestionId();
         final URI uri = uriInfo.getAbsolutePathBuilder().path(File.separator + questionId).build();
         return Response.created(uri).build();
     }
 
+    /**
+     * Get the question with the specified id
+     *
+     * @return the question with the specified id or a <code>404 NOT FOUND</code> if there is no question available
+     * @successResponse 200 Successful request
+     * @errorResponse 404 The question does not exist
+     */
+    @Path("{questionId}")
+    @GET
+    public Question read(@PathParam("questionId") final Long questionId) {
+        return questionService.read(questionId).orElseThrow(NotFoundException::new);
+    }
+
+    /**
+     * Get a list of all questions
+     *
+     * @return a list of all questions
+     * @successResponse 200 Successful request
+     */
+    @GET
+    public List<Question> readAll() {
+        return questionService.readAll();
+    }
+
+    /**
+     * Get the latest question available
+     *
+     * @return the latest question or a <code>404 NOT FOUND</code> if there is no question available
+     * @successResponse 200 The latest question `ch.fihlon.moodini.business.question.entity.Question
+     * @errorResponse 404 There is no question available
+     */
+    @Path("latest")
+    @GET
+    public Question readLatest() {
+        return questionService.readLatest();
+    }
+
+    /**
+     * Update an existing question
+     *
+     * @param question the question to update
+     * @return a <code>200 OK</code> and the updated question
+     * @successResponse 200 The question was successfully updated
+     * @errorResponse 400 The question data in the request was invalid
+     */
+    @Path("{questionId}")
+    @PUT
+    public Response update(@PathParam("questionId") final Long questionId,
+                           @Valid final Question question) {
+        final Question newQuestion = question.toBuilder()
+                .questionId(questionId)
+                .build();
+        final Question savedQuestion = questionService.update(newQuestion);
+        return Response.ok(savedQuestion).build();
+    }
+
+    /**
+     * Delete the question with the specified id
+     *
+     * @return a <code>204 NO CONTENT</code> on success or a <code>404 NOT FOUND</code> if there is no question available
+     * @successResponse 204 The question was successfully deleted
+     * @errorResponse 404 The question does not exist
+     */
+    @Path("{questionId}")
+    @DELETE
+    public Response delete(@PathParam("questionId") final Long questionId) {
+        questionService.delete(questionId);
+        return Response.noContent().build();
+    }
+
+    /**
+     * Vote for the specific answer of a specific question
+     *
+     * @return a <code>200 OK</code> for a successful vote
+     * @successResponse 204 The vote was successful
+     * @errorResponse 404 The question does not exist
+     */
+    @Path("{questionId}/vote")
+    @POST
+    public Response vote(@PathParam("questionId") final Long questionId,
+                         @NotNull final Answer answer) {
+        questionService.vote(questionId, answer);
+        return Response.ok().build();
+    }
 }

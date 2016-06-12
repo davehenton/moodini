@@ -54,7 +54,7 @@ class QuestionRepository implements Serializable {
     }
 
     Question update(@NotNull final Question question) {
-        final Question previousQuestion = findByQuestionId(question.getQuestionId()).orElseThrow(NotFoundException::new);
+        final Question previousQuestion = read(question.getQuestionId()).orElseThrow(NotFoundException::new);
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");
         }
@@ -66,17 +66,17 @@ class QuestionRepository implements Serializable {
         return questionToUpdate;
     }
 
-    Optional<Question> findByQuestionId(@NotNull final Long questionId) {
+    Optional<Question> read(@NotNull final Long questionId) {
         return Optional.ofNullable(questions.get(questionId));
     }
 
-    List<Question> findAll() {
+    List<Question> readAll() {
         return questions.values().stream()
                 .sorted(comparingLong(Question::getQuestionId))
                 .collect(toList());
     }
 
-    Optional<Question> findLatest() {
+    Optional<Question> readLatest() {
         return questions.values().stream()
                 .max(comparingLong(Question::getQuestionId));
     }

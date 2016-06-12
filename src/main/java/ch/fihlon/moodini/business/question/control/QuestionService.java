@@ -69,16 +69,16 @@ public class QuestionService {
         return controller.executeAndQuery((ctrl) -> ctrl.update(question));
     }
 
-    public Optional<Question> findByQuestionId(@NotNull final Long questionId) {
-        return controller.readOnly().findByQuestionId(questionId);
+    public Optional<Question> read(@NotNull final Long questionId) {
+        return controller.readOnly().read(questionId);
     }
 
-    public List<Question> findAll() {
-        return controller.readOnly().findAll();
+    public List<Question> readAll() {
+        return controller.readOnly().readAll();
     }
 
-    public Question findLatest() {
-        final Optional<Question> optional = controller.readOnly().findLatest();
+    public Question readLatest() {
+        final Optional<Question> optional = controller.readOnly().readLatest();
         return optional.orElseThrow(NotFoundException::new);
     }
 
