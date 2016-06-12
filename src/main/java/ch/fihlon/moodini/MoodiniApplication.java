@@ -18,6 +18,7 @@
 package ch.fihlon.moodini;
 
 import ch.fihlon.moodini.business.question.boundary.QuestionsResource;
+import ch.fihlon.moodini.business.user.boundary.UsersResource;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -58,8 +59,7 @@ public class MoodiniApplication extends Application<MoodiniConfiguration> {
                     @NotNull final Environment environment) {
         registerModules(environment.getObjectMapper());
         final Injector injector = createInjector(configuration, environment);
-        final QuestionsResource questionsResource = injector.getInstance(QuestionsResource.class);
-        environment.jersey().register(questionsResource);
+        registerResources(environment, injector);
     }
 
     private static void registerModules(@NotNull final ObjectMapper objectMapper) {
@@ -70,7 +70,8 @@ public class MoodiniApplication extends Application<MoodiniConfiguration> {
         objectMapper.setSerializationInclusion(Include.NON_ABSENT);
     }
 
-    private Injector createInjector(@NotNull final MoodiniConfiguration configuration, @NotNull final Environment environment) {
+    private Injector createInjector(@NotNull final MoodiniConfiguration configuration,
+                                    @NotNull final Environment environment) {
         return Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
@@ -80,6 +81,12 @@ public class MoodiniApplication extends Application<MoodiniConfiguration> {
                 bind(MetricRegistry.class).toInstance(environment.metrics());
             }
         });
+    }
+
+    private void registerResources(@NotNull final Environment environment,
+                                   @NotNull final Injector injector) {
+        environment.jersey().register(injector.getInstance(QuestionsResource.class));
+        environment.jersey().register(injector.getInstance(UsersResource.class));
     }
 
 }
