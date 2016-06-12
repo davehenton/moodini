@@ -51,11 +51,11 @@ public class UserService {
     }
 
     public User create(@NotNull final User user) {
-        return controller.executeAndQuery((mgr) -> mgr.create(user));
+        return controller.executeAndQuery((ctrl) -> ctrl.create(user));
     }
 
     public User update(@NotNull final User user) {
-        return controller.executeAndQuery((mgr) -> mgr.update(user));
+        return controller.executeAndQuery((ctrl) -> ctrl.update(user));
     }
 
     public Optional<User> read(@NotNull final Long userId) {
@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public void delete(@NotNull final Long userId) {
-        controller.execute((mgr) -> mgr.delete(userId));
+        controller.execute((ctrl) -> ctrl.delete(userId));
     }
 
 }

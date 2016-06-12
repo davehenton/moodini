@@ -62,11 +62,11 @@ public class QuestionService {
 //    }
 
     public Question create(@NotNull final Question question) {
-        return controller.executeAndQuery((mgr) -> mgr.create(question));
+        return controller.executeAndQuery((ctrl) -> ctrl.create(question));
     }
 
     public Question update(@NotNull final Question question) {
-        return controller.executeAndQuery((mgr) -> mgr.update(question));
+        return controller.executeAndQuery((ctrl) -> ctrl.update(question));
     }
 
     public Optional<Question> findByQuestionId(@NotNull final Long questionId) {
@@ -83,11 +83,11 @@ public class QuestionService {
     }
 
     public void delete(@NotNull final Long questionId) {
-        controller.execute((mgr) -> mgr.delete(questionId));
+        controller.execute((ctrl) -> ctrl.delete(questionId));
     }
 
     public Long vote(@NotNull final Long questionId,
                      @NotNull final Answer answer) {
-        return controller.executeAndQuery((mgr) -> mgr.vote(questionId, answer));
+        return controller.executeAndQuery((ctrl) -> ctrl.vote(questionId, answer));
     }
 }
