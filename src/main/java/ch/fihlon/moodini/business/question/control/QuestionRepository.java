@@ -54,7 +54,7 @@ class QuestionRepository implements Serializable {
     }
 
     Question update(@NotNull final Question question) {
-        final Question previousQuestion = questions.getOrDefault(question.getQuestionId(), question);
+        final Question previousQuestion = findByQuestionId(question.getQuestionId()).orElseThrow(NotFoundException::new);
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");
         }
