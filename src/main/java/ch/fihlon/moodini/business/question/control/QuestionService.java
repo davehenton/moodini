@@ -82,8 +82,8 @@ public class QuestionService {
         return optional.orElseThrow(NotFoundException::new);
     }
 
-    public void delete(@NotNull final Long userId) {
-        controller.execute((mgr) -> mgr.delete(userId));
+    public void delete(@NotNull final Long questionId) {
+        controller.execute((mgr) -> mgr.delete(questionId));
     }
 
     public Long vote(@NotNull final Long questionId,
