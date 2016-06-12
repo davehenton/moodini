@@ -67,17 +67,17 @@ class QuestionRepository implements Serializable {
     }
 
     Optional<Question> findByQuestionId(@NotNull final Long questionId) {
-        return Optional.ofNullable(this.questions.get(questionId));
+        return Optional.ofNullable(questions.get(questionId));
     }
 
     List<Question> findAll() {
-        return this.questions.values().stream()
+        return questions.values().stream()
                 .sorted(comparingLong(Question::getQuestionId))
                 .collect(toList());
     }
 
     Optional<Question> findLatest() {
-        return this.questions.values().stream()
+        return questions.values().stream()
                 .max(comparingLong(Question::getQuestionId));
     }
 
@@ -86,7 +86,7 @@ class QuestionRepository implements Serializable {
             throw new NotFoundException();
         }
         // TODO delete only questions without votes
-        this.questions.remove(questionId);
+        questions.remove(questionId);
     }
 
     Long vote(@NotNull Long questionId,
