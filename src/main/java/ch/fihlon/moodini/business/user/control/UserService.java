@@ -54,16 +54,16 @@ public class UserService {
         return controller.executeAndQuery((ctrl) -> ctrl.create(user));
     }
 
-    public User update(@NotNull final User user) {
-        return controller.executeAndQuery((ctrl) -> ctrl.update(user));
-    }
-
     public Optional<User> read(@NotNull final Long userId) {
         return controller.readOnly().read(userId);
     }
 
     public List<User> readAll() {
         return controller.readOnly().readAll();
+    }
+
+    public User update(@NotNull final User user) {
+        return controller.executeAndQuery((ctrl) -> ctrl.update(user));
     }
 
     public void delete(@NotNull final Long userId) {
