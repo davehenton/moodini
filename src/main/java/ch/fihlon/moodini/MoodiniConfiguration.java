@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 public class MoodiniConfiguration extends Configuration {
 
     @NotEmpty
-    private String jwtTokenSecret;
+    private String tokenSecret;
 
     @Valid
     private SmtpConfiguration smtp;

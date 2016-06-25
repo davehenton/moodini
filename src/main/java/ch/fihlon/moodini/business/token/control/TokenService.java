@@ -67,7 +67,7 @@ public class TokenService {
     public TokenService(@NotNull final MoodiniConfiguration configuration,
                         @NotNull final UserService userService) {
         this.configuration = configuration;
-        this.tokenSecret = configuration.getJwtTokenSecret().getBytes(Charsets.UTF_8);
+        this.tokenSecret = configuration.getTokenSecret().getBytes(Charsets.UTF_8);
         this.userService = userService;
         challengeCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(10, TimeUnit.MINUTES)

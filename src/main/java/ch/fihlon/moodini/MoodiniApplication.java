@@ -101,7 +101,7 @@ public class MoodiniApplication extends Application<MoodiniConfiguration> {
     private void registerAuthorization(@NotNull final MoodiniConfiguration configuration,
                                        @NotNull final Environment environment,
                                        @NotNull final Injector injector) {
-        final byte[] key = configuration.getJwtTokenSecret().getBytes(Charsets.UTF_8);
+        final byte[] key = configuration.getTokenSecret().getBytes(Charsets.UTF_8);
 
         final JwtConsumer consumer = new JwtConsumerBuilder()
                 .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew

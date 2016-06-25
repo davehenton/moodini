@@ -1,7 +1,7 @@
 server:
   rootPath: '/api/*'
 
-jwtTokenSecret: [change this to something different]
+tokenSecret: [change this to something different]
 
 smtp:
   hostname: [your email server]
