@@ -51,14 +51,20 @@ class UserRepository implements Serializable {
         return userToCreate;
     }
 
+    Optional<User> read(@NotNull final Long userId) {
+        return Optional.ofNullable(users.get(userId));
+    }
+
     List<User> readAll() {
         return users.values().stream()
                 .sorted(comparingLong(User::getUserId))
                 .collect(toList());
     }
 
-    Optional<User> read(@NotNull final Long userId) {
-        return Optional.ofNullable(users.get(userId));
+    Optional<User> readByEmail(@NotNull final String email) {
+        return users.values().stream()
+                .filter(u -> email.equals(u.getEmail()))
+                .findAny();
     }
 
     User update(@NotNull final User user) {
@@ -81,4 +87,5 @@ class UserRepository implements Serializable {
         // TODO delete only users without questions
         users.remove(userId);
     }
+
 }

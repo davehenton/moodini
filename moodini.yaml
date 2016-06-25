@@ -1,2 +1,12 @@
 server:
   rootPath: '/api/*'
+
+jwtTokenSecret: [change this to something different]
+
+smtp:
+  hostname: [your email server]
+  port: 465
+  ssl: true
+  user: [your email server login]
+  password: [your email server password]
+  from: Moodini Authentication <[insert email address here]>

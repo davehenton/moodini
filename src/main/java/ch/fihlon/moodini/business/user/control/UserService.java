@@ -62,6 +62,10 @@ public class UserService {
         return controller.readOnly().readAll();
     }
 
+    public Optional<User> readByEmail(@NotNull final String email) {
+        return controller.readOnly().readByEmail(email);
+    }
+
     public User update(@NotNull final User user) {
         return controller.executeAndQuery((ctrl) -> ctrl.update(user));
     }

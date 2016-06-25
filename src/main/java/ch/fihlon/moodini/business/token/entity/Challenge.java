@@ -15,46 +15,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.fihlon.moodini;
+package ch.fihlon.moodini.business.token.entity;
 
-import io.dropwizard.Configuration;
 import lombok.Getter;
-import org.hibernate.validator.constraints.NotEmpty;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
+@RequiredArgsConstructor
 @Getter
-public class MoodiniConfiguration extends Configuration {
+@ToString
+public class Challenge {
 
-    @NotEmpty
-    private String jwtTokenSecret;
+    private final String challenge;
+    private int tries;
 
-    @Valid
-    private SmtpConfiguration smtp;
-
-    @Getter
-    public class SmtpConfiguration {
-
-        @NotEmpty
-        private String hostname;
-
-        @NotNull
-        @Min(1)
-        private Integer port;
-
-        @NotEmpty
-        private String user;
-
-        @NotEmpty
-        private String password;
-
-        @NotNull
-        private Boolean ssl;
-
-        @NotEmpty
-        private String from;
-
+    public void increaseTries() {
+        tries++;
     }
 }

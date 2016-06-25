@@ -1,85 +1,98 @@
+/*
+ * Moodini
+ * Copyright (C) 2016 Marcus Fihlon
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package ch.fihlon.moodini.business.token.boundary;
 
-import ch.fihlon.moodini.MoodiniConfiguration;
-import ch.fihlon.moodini.business.user.control.UserService;
+import ch.fihlon.moodini.business.token.control.TokenService;
+import ch.fihlon.moodini.business.token.entity.AuthenticationData;
 import ch.fihlon.moodini.business.user.entity.User;
-import com.github.toastshaman.dropwizard.auth.jwt.hmac.HmacSHA512Signer;
-import com.github.toastshaman.dropwizard.auth.jwt.model.JsonWebToken;
-import com.github.toastshaman.dropwizard.auth.jwt.model.JsonWebTokenClaim;
-import com.github.toastshaman.dropwizard.auth.jwt.model.JsonWebTokenHeader;
 import io.dropwizard.auth.Auth;
-import org.apache.commons.io.Charsets;
-import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.Principal;
+import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.WILDCARD;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("token")
 @Produces(APPLICATION_JSON)
 public class TokenResource {
 
-    private final byte[] tokenSecret;
-    private final UserService userService;
+    private final TokenService tokenService;
 
     @Inject
-    public TokenResource(@NotNull final MoodiniConfiguration configuration,
-                         @NotNull final UserService userService) {
-        this.tokenSecret = configuration.getJwtTokenSecret().getBytes(Charsets.UTF_8);
-        this.userService = userService;
+    public TokenResource(@NotNull final TokenService tokenService) {
+        this.tokenService = tokenService;
     }
 
+    /**
+     * Request a challenge for authorization
+     *
+     * @return a <code>200 OK</code> on success
+     */
     @GET
-    @Consumes(WILDCARD)
     public Response requestChallenge(@QueryParam("email") final String email) {
         final Response.ResponseBuilder responseBuilder;
 
         if (email == null || email.trim().isEmpty()) {
-            responseBuilder = Response.status(BAD_REQUEST);
-        } else {
-            responseBuilder = authenticationService.requestChallenge(email) ?
-                    Response.ok().build() :
-                    Response.status(NOT_FOUND);
+            return Response.status(BAD_REQUEST)
+                    .build();
         }
-
-        return responseBuilder.build();
+        tokenService.requestChallenge(email);
+        return Response.ok()
+                .build();
     }
 
+    /**
+     * Authorize and request a new valid token
+     *
+     * @param authenticationData the data to authenticate with
+     * @return a <code>201 CREATED</code> with a new valid token on success
+     */
     @POST
-    public Response requestToken() {
-        final User user = userService.readAll().get(0);
-
-        final HmacSHA512Signer signer = new HmacSHA512Signer(tokenSecret);
-        final JsonWebToken token = JsonWebToken.builder()
-                .header(JsonWebTokenHeader.HS512())
-                .claim(JsonWebTokenClaim.builder()
-                        .subject(user.getUserId().toString())
-                        .issuedAt(DateTime.now())
-                        .expiration(DateTime.now().plusHours(12))
-                        .build())
-                .build();
-        final String signedToken = signer.sign(token);
-        return Response.status(CREATED)
-                .entity(singletonMap("token", signedToken))
-                .header("Authorization", "Bearer ".concat(signedToken))
+    public Response authorizeAndRequestToken(@NotNull final AuthenticationData authenticationData) {
+        final Optional<String> token = tokenService.authorize(
+                authenticationData.getEmail(), authenticationData.getChallenge());
+        if (token.isPresent()) {
+            return Response.status(CREATED)
+                    .entity(singletonMap("token", token.get()))
+                    .header("Authorization", "Bearer ".concat(token.get()))
+                    .build();
+        }
+        return Response.status(UNAUTHORIZED)
                 .build();
     }
 
+    /**
+     * Check if the provided token is still valid
+     *
+     * @return a <code>200 OK</code> if the provided token is still valid
+     */
     @GET
     @Path("check")
     public Response validateToken(@Auth Principal principal) {
@@ -87,4 +100,5 @@ public class TokenResource {
         return Response.ok(user)
                 .build();
     }
+
 }

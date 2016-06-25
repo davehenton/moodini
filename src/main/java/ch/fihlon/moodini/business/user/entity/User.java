@@ -17,6 +17,7 @@
  */
 package ch.fihlon.moodini.business.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AccessLevel;
@@ -29,12 +30,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 import ch.fihlon.moodini.business.user.entity.User.UserBuilder;
 
 import java.io.Serializable;
+import java.security.Principal;
 
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @JsonDeserialize(builder = UserBuilder.class)
-public class User implements Serializable {
+public class User implements Principal, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,10 +44,24 @@ public class User implements Serializable {
 
     private Long version;
 
+    @NotEmpty
+    @Length(max=50)
+    private String firstname;
+
+    @NotEmpty
+    @Length(max=50)
+    private String lastname;
+
     @Email
     @NotEmpty
     @Length(max=100)
     private String email;
+
+    @Override
+    @JsonIgnore
+    public String getName() {
+        return String.format("%s %s", getFirstname(), getLastname());
+    }
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class UserBuilder {
