@@ -21,6 +21,7 @@ import ch.fihlon.moodini.AbstractLifecycleListener;
 import ch.fihlon.moodini.PersistenceManager;
 import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
+import ch.fihlon.moodini.business.user.entity.User;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
@@ -30,6 +31,7 @@ import pl.setblack.airomem.core.SimpleController;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -61,12 +63,25 @@ public class QuestionService {
 //        healthCheckRegistry.register(QuestionService.class.getName(), questionServiceHealthCheck);
 //    }
 
-    public Question create(@NotNull final Question question) {
-        return controller.executeAndQuery((ctrl) -> ctrl.create(question));
+    public Question create(@NotNull final User user,
+                           @NotNull final Question question) {
+        final Question newQuestion = question.toBuilder()
+                .userId(user.getUserId())
+                .build();
+        return controller.executeAndQuery((ctrl) -> ctrl.create(newQuestion));
     }
 
-    public Question update(@NotNull final Question question) {
-        return controller.executeAndQuery((ctrl) -> ctrl.update(question));
+    public Question update(@NotNull final User user,
+                           @NotNull final Question question) {
+        final Long questionId = question.getQuestionId();
+        final Question oldQuestion = read(questionId).orElseThrow(NotFoundException::new);
+        if (!oldQuestion.getUserId().equals(user.getUserId())) {
+            throw new ForbiddenException();
+        }
+        final Question newQuestion = question.toBuilder()
+                .userId(user.getUserId())
+                .build();
+        return controller.executeAndQuery((ctrl) -> ctrl.update(newQuestion));
     }
 
     public Optional<Question> read(@NotNull final Long questionId) {
@@ -82,12 +97,18 @@ public class QuestionService {
         return optional.orElseThrow(NotFoundException::new);
     }
 
-    public void delete(@NotNull final Long questionId) {
+    public void delete(@NotNull final User user,
+                       @NotNull final Long questionId) {
+        final Question oldQuestion = read(questionId).orElseThrow(NotFoundException::new);
+        if (!oldQuestion.getUserId().equals(user.getUserId())) {
+            throw new ForbiddenException();
+        }
         controller.execute((ctrl) -> ctrl.delete(questionId));
     }
 
     public Long vote(@NotNull final Long questionId,
                      @NotNull final Answer answer) {
+        read(questionId).orElseThrow(NotFoundException::new);
         return controller.executeAndQuery((ctrl) -> ctrl.vote(questionId, answer));
     }
 }

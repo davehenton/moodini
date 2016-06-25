@@ -18,6 +18,7 @@
 package ch.fihlon.moodini.business.question.entity;
 
 import ch.fihlon.moodini.business.question.entity.Question.QuestionBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AccessLevel;
@@ -27,6 +28,7 @@ import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Value
@@ -40,6 +42,10 @@ public class Question implements Serializable {
     private Long questionId;
 
     private Long version;
+
+    @NotNull
+    @JsonIgnore
+    private Long userId;
 
     @NotEmpty
     @Length(max=100)

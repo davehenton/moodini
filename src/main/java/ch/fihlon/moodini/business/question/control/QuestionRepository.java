@@ -54,6 +54,7 @@ class QuestionRepository implements Serializable {
     }
 
     Question update(@NotNull final Question question) {
+        // TODO update only questions without votes
         final Question previousQuestion = read(question.getQuestionId()).orElseThrow(NotFoundException::new);
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");
@@ -82,9 +83,6 @@ class QuestionRepository implements Serializable {
     }
 
     void delete(@NotNull final Long questionId) {
-        if (!questions.containsKey(questionId)) {
-            throw new NotFoundException();
-        }
         // TODO delete only questions without votes
         questions.remove(questionId);
     }
