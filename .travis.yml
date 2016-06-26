@@ -13,6 +13,9 @@ after_success:
   - mvn jacoco:report coveralls:report docker:build
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=mcpringle/moodini
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
 
 notifications:
@@ -28,6 +31,7 @@ env:
   - secure: aLrUF+VieBiPOkrmXiRKV3feBkJGgS6dUrkRoHqMFZ9IzdZVta2ol8EMXrtaEBaVzUeJdZNTlw+gMiv4xNdcEYJAi8ieoOCn0jqzslbqVHriw/5RV2C72qZi1ym72OTraWvs2iDcwqeTDYPeePrezce7ASpEIKu8oP3jksm7SSCyzZlLSqJjvSi69SAw3dp3GxivhpEdTFKVY3RQRn5sU/VGGxvIS6cXxt8DaB4jLmAg6J5AXTPNn/raKh7/ysJqrJcaeCGIsmfqXW+mpupCf6hy7DR+fQGOm+JDOSdqpeovaAmHNDEl3LiHp0o5n1uyw8sxaQ8jeEIAzb02rNerOhffn+Q3F+ZDlPnNwV2qEz02ZH5IgYTqcyR57wJpkGwVTMX4kMAIKwZp2r9lMsGOAn1XmlphMZw4erXH6zjoUnmR1th7H5maQrYJwdEg4JT+VQ5kq42vVYUDacMf5+LOXiaF1k2MA9hQkN00ngzRXCerZcilfqmxz6eqnS3OZh2hcQlN/ecVt9iCx24CK7d77ARVuAn3/e4XzLUHS9dRW7jIHstx2zKioJIVhWmX1afrXFbn6vR04ev4NEGugi3GtzGGvJwJWYouC91hBIsEMrDKFNyXUAmG/zsNkpPDUpw3V2RnI6QnUb32vXU2Q6jIs6HuJfl6T+u/IlaRvrv3Fnk=
   - secure: EvW0GNMd8qurBkNH/DdzxvdwzgmZGT2CkJFGX61emggQ2MA7jTvkeET3KnLt0QyqpIOfsrlYZaw8Tr4A3A4DSY5VV4oU3bikfK+B1BNTM+Bv5yWjTAUGsCdGCE8XzuGz67LDAVR3ZOanE9JENE6Q9ElSdvdI9cKhGeS0dd+I3+moEnZzMaLX9n4Fb2gjwzKDzxm9IWENooQgmp6VgM+NJgJpLuWxJrg6vgFNT2FOUt4uQIdoEBUA3RYDs07D6vqONKc9NKCHl+nrEK+ovA/cYZjwdfMGb6gch1RsHAAa8Ui9JLF4jlA377TiwZiapsptXT8P+Kb/tL5NQbKxt2eA4/NrH9DA9APcxF7+IYiJ4tYLSqG5HyVvZHAS8TMD9R+4ZYqItEnzX14FmUFPh2t3ItdWuN9zpWFJwZOk+4hD3AZU9SpU/qdUoKm5TyfI14S0ysy/KzesyYtvnQqUtlE6ZmyL2j+tYvrToFiSI8Ve68cIJSoK3ubQLosNanXPWBVstHHpIevgHhm8NSrOJzYgLvbX9f1gO6LV+6wXLhanq3Q12XKoG+w5t4ZUnT68c3/LL2FmZjFPxVvGpAXuPrI8f2vMb0lIUoG4kvSmgEstpqVmxq1N5GbqdCV5vp1FSIRTFQHTs5Lmfx5AvyIO8AG1MbH32Qrhv2wvzZZ64yItJik=
   - secure: W/aRxJYtx/hrV+5gqY1GzbUNrC+g6+Jw0KwMn2nkL+mY2nBrXZ59OyzqGI37RTJjbWLmqEREzyYlsiBy6X9wxSyz+hyM5u1iJA2dyCcEMQ1u6jjdwFzcAhAxkUHuoX3AkNlrb5rzwZKsA9BJZgLwpRUbg4UEuVMsl0tBUhYX1bviviR8xGQMth0vLlbftPVWTlpbxxqh2zjJR2R4GUzWjAzYRv6LJpR020y0kWZTfBSby0pfMYM9f0U+LkRLGTDb44ODxoKNdt1acYgeMRPMQf9yEWEZA9pRaY0sPE4jpy12KE1SGYnVowcaj6zjs7ZdWdt0m6MeXjZJiZwPnv0Qn47gUshSPWZrZ7/KciKwhgpwlXtdaJR7w2qILCCjl9OK1t9btAwfKIgCa7QAYDXXMbuz0M3IyEIzMuVHWLKrrjJZwlaeTrqojaLY/GXRznK8L6bb2w6OQa+hO+UD5wjTATo3TY02OxY11B6pP+MJA6rEJ698cdIjPDFzemdfzb5mgUf5+ro+/z4ZZ53n6Lw85BJLWJpIyYLDRo5VysQ6lt3fynKUkBSrw+UXl654EgRLofI0W/9Mk/9H1Fml9NsU7jhBWZKeOnxDns6c90K/wZnKm6WROPqVnrLj8QLxG/HYD1EO5JfMMPSIEjwFE1B4dzMoSTn/qphV//PY5pkPUS8=
+  - COMMIT=${TRAVIS_COMMIT::8}
 
 cache:
   directories:

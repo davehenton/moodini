@@ -314,7 +314,6 @@
                     <cmd>java -jar /data/${project.build.finalName}.jar server /data/moodini.yaml</cmd>
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
-                        <imageTag>latest</imageTag>
                     </imageTags>
                     <forceTags>true</forceTags>
                     <pushImage>false</pushImage>
