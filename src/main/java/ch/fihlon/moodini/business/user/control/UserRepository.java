@@ -51,7 +51,7 @@ class UserRepository implements Serializable {
         return userToCreate;
     }
 
-    Optional<User> read(@NotNull final Long userId) {
+    Optional<User> readById(@NotNull final Long userId) {
         return Optional.ofNullable(users.get(userId));
     }
 
@@ -68,7 +68,7 @@ class UserRepository implements Serializable {
     }
 
     User update(@NotNull final User user) {
-        final User previousUser = read(user.getUserId()).orElseThrow(NotFoundException::new);
+        final User previousUser = readById(user.getUserId()).orElseThrow(NotFoundException::new);
         if (!previousUser.getVersion().equals(user.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a user that was modified concurrently!");
         }

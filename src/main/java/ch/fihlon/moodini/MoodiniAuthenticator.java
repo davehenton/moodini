@@ -55,7 +55,7 @@ public class MoodiniAuthenticator implements Authenticator<JsonWebToken, User> {
 
         final String subject = token.claim().subject();
         final Long userId = Long.parseLong(subject);
-        final Optional<User> userOptional = userService.read(userId);
+        final Optional<User> userOptional = userService.readById(userId);
 
         return com.google.common.base.Optional.fromNullable(userOptional.get());
     }

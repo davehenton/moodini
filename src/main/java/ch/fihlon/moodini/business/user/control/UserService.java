@@ -54,12 +54,12 @@ public class UserService {
         return controller.executeAndQuery((ctrl) -> ctrl.create(user));
     }
 
-    public Optional<User> read(@NotNull final Long userId) {
-        return controller.readOnly().read(userId);
-    }
-
     public List<User> readAll() {
         return controller.readOnly().readAll();
+    }
+
+    public Optional<User> readById(@NotNull final Long userId) {
+        return controller.readOnly().readById(userId);
     }
 
     public Optional<User> readByEmail(@NotNull final String email) {

@@ -84,7 +84,7 @@ public class UsersResource {
     @Path("{userId}")
     @GET
     public User read(@PathParam("userId") final Long userId) {
-        return userService.read(userId).orElseThrow(NotFoundException::new);
+        return userService.readById(userId).orElseThrow(NotFoundException::new);
     }
 
     /**
