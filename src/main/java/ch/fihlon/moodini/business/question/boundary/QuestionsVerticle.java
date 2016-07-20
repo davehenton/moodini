@@ -20,8 +20,6 @@ package ch.fihlon.moodini.business.question.boundary;
 import ch.fihlon.moodini.business.question.control.QuestionService;
 import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
-import ch.fihlon.moodini.business.user.control.UserService;
-import ch.fihlon.moodini.business.user.entity.User;
 import com.google.inject.Guice;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -39,9 +37,6 @@ public class QuestionsVerticle extends AbstractVerticle {
 
     @Inject
     private QuestionService questionService;
-
-    @Inject
-    private UserService userService;
 
     @Override
     public void start(Future<Void> fut) {
@@ -121,8 +116,7 @@ public class QuestionsVerticle extends AbstractVerticle {
         final String body = routingContext.getBodyAsString();
         final Question question = Json.decodeValue(body,
                 Question.class);
-        final User user = userService.readAll().get(0);
-        final Question createdQuestion = questionService.create(user, question);
+        final Question createdQuestion = questionService.create(question);
         final String location = routingContext.normalisedPath() +
                 File.separator + createdQuestion.getQuestionId().toString();
         routingContext.response()
@@ -135,8 +129,7 @@ public class QuestionsVerticle extends AbstractVerticle {
         final Long id = Long.valueOf(routingContext.request().getParam("id"));
         final Question question = Json.decodeValue(routingContext.getBodyAsString(),
                 Question.class).toBuilder().questionId(id).build();;
-        final User user = userService.readAll().get(0);
-        final Question updatedQuestion = questionService.update(user, question);
+        final Question updatedQuestion = questionService.update(question);
         routingContext.response()
                 .putHeader("Content-Type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(updatedQuestion));
@@ -144,8 +137,7 @@ public class QuestionsVerticle extends AbstractVerticle {
 
     private void delete(RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam("id"));
-        final User user = userService.readAll().get(0);
-        questionService.delete(user, id);
+        questionService.delete(id);
         routingContext.response()
                 .setStatusCode(204);
     }

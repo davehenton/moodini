@@ -20,10 +20,8 @@ package ch.fihlon.moodini.business.question.boundary;
 import ch.fihlon.moodini.business.question.control.QuestionService;
 import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
-import ch.fihlon.moodini.business.user.entity.User;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
-import io.dropwizard.auth.Auth;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
@@ -43,7 +41,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.File;
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 
 @Immutable
@@ -70,11 +67,9 @@ public class QuestionsResource {
      * @errorResponse 400 There was no question in the request
      */
     @POST
-    public Response create(@Auth Principal principal,
-                           @Valid final Question newQuestion,
+    public Response create(@Valid final Question newQuestion,
                            @Context UriInfo uriInfo) {
-        final User user = (User) principal;
-        final Question savedQuestion = questionService.create(user, newQuestion);
+        final Question savedQuestion = questionService.create(newQuestion);
         final Long questionId = savedQuestion.getQuestionId();
         final URI uri = uriInfo.getAbsolutePathBuilder().path(File.separator + questionId).build();
         return Response.created(uri).build();
@@ -127,14 +122,12 @@ public class QuestionsResource {
      */
     @Path("{questionId}")
     @PUT
-    public Response update(@Auth Principal principal,
-                           @PathParam("questionId") final Long questionId,
+    public Response update(@PathParam("questionId") final Long questionId,
                            @Valid final Question question) {
-        final User user = (User) principal;
         final Question newQuestion = question.toBuilder()
                 .questionId(questionId)
                 .build();
-        final Question savedQuestion = questionService.update(user, newQuestion);
+        final Question savedQuestion = questionService.update(newQuestion);
         return Response.ok(savedQuestion).build();
     }
 
@@ -147,10 +140,8 @@ public class QuestionsResource {
      */
     @Path("{questionId}")
     @DELETE
-    public Response delete(@Auth Principal principal,
-                           @PathParam("questionId") final Long questionId) {
-        final User user = (User) principal;
-        questionService.delete(user, questionId);
+    public Response delete(@PathParam("questionId") final Long questionId) {
+        questionService.delete(questionId);
         return Response.noContent().build();
     }
 
