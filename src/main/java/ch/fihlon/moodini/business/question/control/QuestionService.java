@@ -17,17 +17,13 @@
  */
 package ch.fihlon.moodini.business.question.control;
 
-import ch.fihlon.moodini.AbstractLifecycleListener;
 import ch.fihlon.moodini.PersistenceManager;
 import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
-import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
-import org.eclipse.jetty.util.component.LifeCycle;
 import pl.setblack.airomem.core.SimpleController;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.NotFoundException;
@@ -41,25 +37,10 @@ public class QuestionService {
 
     private SimpleController<QuestionRepository> controller;
 
-    @Inject
-    public QuestionService(@NotNull final LifecycleEnvironment lifecycleEnvironment) {
+    public QuestionService() {
         controller = PersistenceManager.createSimpleController(Question.class, QuestionRepository::new);
-        lifecycleEnvironment.addLifeCycleListener(new AbstractLifecycleListener() {
-            @Override
-            public void lifeCycleStopping(@NotNull final LifeCycle event) {
-                controller.close();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> controller.close()));
     }
-
-//    @Inject
-//    private HealthCheckRegistry healthCheckRegistry;
-
-//    @PostConstruct
-//    private void registerHealthCheck() {
-//        final QuestionServiceHealthCheck questionServiceHealthCheck = new QuestionServiceHealthCheck(this);
-//        healthCheckRegistry.register(QuestionService.class.getName(), questionServiceHealthCheck);
-//    }
 
     public Question create(@NotNull final Question question) {
         return controller.executeAndQuery((ctrl) -> ctrl.create(question));
@@ -67,7 +48,7 @@ public class QuestionService {
 
     public Question update(@NotNull final Question question) {
         final Long questionId = question.getQuestionId();
-        final Question oldQuestion = read(questionId).orElseThrow(NotFoundException::new);
+        read(questionId).orElseThrow(NotFoundException::new);
         return controller.executeAndQuery((ctrl) -> ctrl.update(question));
     }
 
