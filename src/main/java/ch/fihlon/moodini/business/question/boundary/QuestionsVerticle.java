@@ -122,13 +122,14 @@ public class QuestionsVerticle extends AbstractVerticle {
         routingContext.response()
                 .setStatusCode(201)
                 .putHeader("Location", location)
+                .putHeader("Content-Type", "application/json; charset=utf-8")
                 .end(Json.encodePrettily(createdQuestion));
     }
 
     private void update(RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam("id"));
         final Question question = Json.decodeValue(routingContext.getBodyAsString(),
-                Question.class).toBuilder().questionId(id).build();;
+                Question.class).toBuilder().questionId(id).build();
         final Question updatedQuestion = questionService.update(question);
         routingContext.response()
                 .putHeader("Content-Type", "application/json; charset=utf-8")
@@ -139,7 +140,8 @@ public class QuestionsVerticle extends AbstractVerticle {
         final Long id = Long.valueOf(routingContext.request().getParam("id"));
         questionService.delete(id);
         routingContext.response()
-                .setStatusCode(204);
+                .setStatusCode(204)
+                .end();
     }
 
 }
