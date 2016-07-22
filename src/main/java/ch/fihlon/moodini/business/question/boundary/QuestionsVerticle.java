@@ -17,10 +17,10 @@
  */
 package ch.fihlon.moodini.business.question.boundary;
 
+import ch.fihlon.moodini.Injector;
 import ch.fihlon.moodini.business.question.control.QuestionService;
 import ch.fihlon.moodini.business.question.entity.Answer;
 import ch.fihlon.moodini.business.question.entity.Question;
-import com.google.inject.Guice;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.json.Json;
@@ -40,7 +40,7 @@ public class QuestionsVerticle extends AbstractVerticle {
 
     @Override
     public void start(Future<Void> fut) {
-        Guice.createInjector().injectMembers(this);
+        Injector.injectMembers(this);
 
         // Create a router object.
         Router router = Router.router(vertx);
