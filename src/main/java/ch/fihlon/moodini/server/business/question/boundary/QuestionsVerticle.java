@@ -21,6 +21,7 @@ import ch.fihlon.moodini.server.Injector;
 import ch.fihlon.moodini.server.business.question.control.QuestionService;
 import ch.fihlon.moodini.server.business.question.entity.Answer;
 import ch.fihlon.moodini.server.business.question.entity.Question;
+import ch.fihlon.moodini.server.exception.StatusCodeException;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.json.Json;
@@ -45,7 +46,8 @@ public class QuestionsVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
 
         // Add the body handler
-        router.route("/api/questions*").handler(BodyHandler.create());
+        router.route("/api/questions*").handler(BodyHandler.create())
+                .failureHandler(this::failueHandler);
 
         // Add the routing
         router.post("/api/questions").handler(this::create);
@@ -72,6 +74,15 @@ public class QuestionsVerticle extends AbstractVerticle {
                             }
                         }
                 );
+    }
+
+    private void failueHandler(RoutingContext routingContext) {
+        final Throwable failure = routingContext.failure();
+        if (failure instanceof StatusCodeException) {
+            final StatusCodeException exception = (StatusCodeException) failure;
+            routingContext.response().setStatusCode(exception.getStatusCode());
+        }
+        routingContext.response().end();
     }
 
     private void vote(RoutingContext routingContext) {

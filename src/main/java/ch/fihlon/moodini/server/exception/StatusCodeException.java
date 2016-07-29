@@ -17,7 +17,7 @@
  */
 package ch.fihlon.moodini.server.exception;
 
-public interface StatusCodeEception {
+public interface StatusCodeException {
 
     Integer getStatusCode();
 
