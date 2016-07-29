@@ -17,8 +17,11 @@
  */
 package ch.fihlon.moodini.server.exception;
 
-public interface StatusCodeEception {
+public class NotFoundException extends RuntimeException implements StatusCodeEception {
 
-    Integer getStatusCode();
+    @Override
+    public Integer getStatusCode() {
+        return 404;
+    }
 
 }
