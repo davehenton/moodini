@@ -1,4 +1,4 @@
-package ch.fihlon.moodini.business.question.entity;
+package ch.fihlon.moodini.server.business.question.entity;
 
 import org.junit.Test;
 

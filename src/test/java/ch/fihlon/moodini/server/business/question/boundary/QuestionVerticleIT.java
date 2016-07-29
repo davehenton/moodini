@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.fihlon.moodini.business.question.boundary;
+package ch.fihlon.moodini.server.business.question.boundary;
 
-import ch.fihlon.moodini.business.question.entity.Question;
+import ch.fihlon.moodini.server.business.question.entity.Question;
 import com.jayway.restassured.RestAssured;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

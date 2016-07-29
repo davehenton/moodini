@@ -15,19 +15,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.fihlon.moodini.business.question.boundary;
+package ch.fihlon.moodini.server.business.question.boundary;
 
-import ch.fihlon.moodini.Injector;
-import ch.fihlon.moodini.business.question.control.QuestionService;
-import ch.fihlon.moodini.business.question.entity.Answer;
-import ch.fihlon.moodini.business.question.entity.Question;
+import ch.fihlon.moodini.server.Injector;
+import ch.fihlon.moodini.server.business.question.control.QuestionService;
+import ch.fihlon.moodini.server.business.question.entity.Answer;
+import ch.fihlon.moodini.server.business.question.entity.Question;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -45,11 +44,10 @@ public class QuestionsVerticle extends AbstractVerticle {
         // Create a router object.
         Router router = Router.router(vertx);
 
-        // Serve static resources from the assets directory
-        router.route("/assets/*").handler(StaticHandler.create("assets"));
-
+        // Add the body handler
         router.route("/api/questions*").handler(BodyHandler.create());
 
+        // Add the routing
         router.post("/api/questions").handler(this::create);
         router.get("/api/questions").handler(this::list);
         router.get("/api/questions/latest").handler(this::latest);

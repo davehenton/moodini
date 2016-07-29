@@ -1,4 +1,4 @@
-package ch.fihlon.moodini;
+package ch.fihlon.moodini.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

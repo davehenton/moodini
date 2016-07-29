@@ -1,4 +1,4 @@
-package ch.fihlon.moodini;
+package ch.fihlon.moodini.server;
 
 import java.io.Serializable;
 

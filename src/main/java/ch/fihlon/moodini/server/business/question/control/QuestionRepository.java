@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.fihlon.moodini.business.question.control;
+package ch.fihlon.moodini.server.business.question.control;
 
-import ch.fihlon.moodini.business.question.entity.Answer;
-import ch.fihlon.moodini.business.question.entity.Question;
+import ch.fihlon.moodini.server.business.question.entity.Answer;
+import ch.fihlon.moodini.server.business.question.entity.Question;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.NotFoundException;
