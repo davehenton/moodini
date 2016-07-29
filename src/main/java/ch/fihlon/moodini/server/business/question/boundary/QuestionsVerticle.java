@@ -77,6 +77,7 @@ public class QuestionsVerticle extends AbstractVerticle {
     }
 
     private void failueHandler(RoutingContext routingContext) {
+        @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
         final Throwable failure = routingContext.failure();
         if (failure instanceof StatusCodeException) {
             final StatusCodeException exception = (StatusCodeException) failure;

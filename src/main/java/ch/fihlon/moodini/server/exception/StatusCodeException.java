@@ -17,8 +17,18 @@
  */
 package ch.fihlon.moodini.server.exception;
 
-public interface StatusCodeException {
+import javax.validation.constraints.NotNull;
 
-    Integer getStatusCode();
+public abstract class StatusCodeException extends RuntimeException {
+
+    private Integer statusCode = 500;
+
+    StatusCodeException(@NotNull final Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
 
 }
