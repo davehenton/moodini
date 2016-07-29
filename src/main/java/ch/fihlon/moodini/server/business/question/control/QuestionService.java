@@ -20,19 +20,14 @@ package ch.fihlon.moodini.server.business.question.control;
 import ch.fihlon.moodini.server.PersistenceManager;
 import ch.fihlon.moodini.server.business.question.entity.Answer;
 import ch.fihlon.moodini.server.business.question.entity.Question;
-import com.codahale.metrics.annotation.Metered;
-import com.codahale.metrics.annotation.Timed;
 import pl.setblack.airomem.core.SimpleController;
 
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Singleton
-@Timed(name = "Timed: QuestionService")
-@Metered(name = "Metered: QuestionService")
 public class QuestionService {
 
     private SimpleController<QuestionRepository> controller;

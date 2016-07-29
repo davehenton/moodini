@@ -57,16 +57,6 @@
             <artifactId>vertx-web</artifactId>
             <version>3.3.2</version>
         </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-            <version>0.9.3</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-assets</artifactId>
-            <version>0.9.3</version>
-        </dependency>
         <dependency> <!-- Looks like a dependency version mess with jackson/joda module combination -->
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -150,12 +140,6 @@
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
             <version>1.6.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-testing</artifactId>
-            <version>0.9.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>

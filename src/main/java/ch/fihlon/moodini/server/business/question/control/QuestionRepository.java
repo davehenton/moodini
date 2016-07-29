@@ -21,7 +21,6 @@ import ch.fihlon.moodini.server.business.question.entity.Answer;
 import ch.fihlon.moodini.server.business.question.entity.Question;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.NotFoundException;
 import java.io.Serializable;
 import java.util.ConcurrentModificationException;
 import java.util.List;
