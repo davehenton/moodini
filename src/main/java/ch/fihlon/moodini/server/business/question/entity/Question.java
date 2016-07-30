@@ -45,7 +45,7 @@ public class Question implements Serializable {
     private Long version;
 
     @NotEmpty
-    @Length(max=100)
+    @Length(max = 100)
     private String question;
 
     /**

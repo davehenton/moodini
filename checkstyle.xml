@@ -158,6 +158,21 @@
         <module name="ParameterNumber">
             <property name="max" value="3" />
         </module>
+
+        <!-- Checks for whitespace                               -->
+        <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+        <module name="EmptyForIteratorPad" />
+        <module name="NoWhitespaceAfter" />
+        <module name="NoWhitespaceBefore" />
+        <module name="OperatorWrap">
+            <property name="tokens" value="ASSIGN" />
+            <property name="option" value="eol" />
+        </module>
+        <module name="ParenPad" />
+        <module name="WhitespaceAfter" />
+        <module name="WhitespaceAround" />
+        <module name="GenericWhitespace" />
+
     </module>
 
 </module>
