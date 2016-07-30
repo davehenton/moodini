@@ -58,9 +58,9 @@ public class QuestionVerticleIT {
                 .post("/api/questions")
                 .thenReturn()
                 .as(Question.class);
-        assertThat(question.getQuestion(), is(questionText));
-        assertThat(question.getQuestionId(), is(not(0)));
-        assertThat(question.getVersion(), is(not(0)));
+        assertThat("The text is not equal", question.getQuestion(), is(questionText));
+        assertThat("The id should not be 0", question.getQuestionId(), is(not(0)));
+        assertThat("The version should not be 0", question.getVersion(), is(not(0)));
 
         // read all
         get("/api/questions").then()
@@ -84,9 +84,9 @@ public class QuestionVerticleIT {
                 .put("/api/questions/" + question.getQuestionId())
                 .thenReturn()
                 .as(Question.class);
-        assertThat(question.getQuestion(), is(questionText));
-        assertThat(question.getQuestionId(), is(not(0)));
-        assertThat(question.getVersion(), is(not(0)));
+        assertThat("The text is not equal", question.getQuestion(), is(questionText));
+        assertThat("The id should not be 0", question.getQuestionId(), is(not(0)));
+        assertThat("The version should not be 0", question.getVersion(), is(not(0)));
 
         // read one
         get("/api/questions/" + question.getQuestionId()).then()
