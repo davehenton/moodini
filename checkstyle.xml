@@ -60,7 +60,20 @@
         <property name="fileExtensions" value="java" />
     </module>
 
+    <!-- Uses pairs of comments to suppress audit events                                    -->
+    <!-- See http://checkstyle.sourceforge.net/config_filters.html#SuppressionCommentFilter -->
+    <module name="SuppressionCommentFilter" />
+
+    <!-- Uses individual comments to suppress audit events                                         -->
+    <!-- See http://checkstyle.sourceforge.net/config_filters.html#SuppressWithNearbyCommentFilter -->
+    <module name="SuppressWithNearbyCommentFilter" />
+
     <module name="TreeWalker">
+
+        <property name="cacheFile" value="${checkstyle.cache.file}"/>
+
+        <!-- Ensure that CHECKSTYLE:OFF comments are available to the filter -->
+        <module name="FileContentsHolder" />
 
         <module name="ImportControl">
             <property name="severity" value="error" />
