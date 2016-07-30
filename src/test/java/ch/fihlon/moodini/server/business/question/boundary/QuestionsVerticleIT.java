@@ -23,11 +23,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-import static com.jayway.restassured.RestAssured.delete;
-import static com.jayway.restassured.RestAssured.get;
-import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,10 +38,20 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class QuestionsVerticleIT {
 
+    private static final int DEFAULT_HTTP_PORT = 8080;
+    private static final int SC_OK = 200;
+    private static final int SC_NO_CONTENT = 204;
+    private static final int SC_NOT_FOUND = 404;
+    private static final String PROPERTY_VERSION = "version";
+    private static final String PROPERTY_QUESTION_ID = "questionId";
+    private static final String PROPERTY_QUESTION_TEXT = "question";
+    private static final String API_ENDPOINT_ALL = "/api/questions";
+    private static final String API_PREFIX_ONE = "/api/questions/";
+
     @BeforeClass
     public static void configureRestAssured() {
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = Integer.getInteger("http.port", 8080);
+        RestAssured.port = Integer.getInteger("http.port", DEFAULT_HTTP_PORT);
     }
 
     @AfterClass
@@ -56,56 +65,69 @@ public class QuestionsVerticleIT {
 
         // create
         Question question = given()
-                .body("{\"question\":\"" + questionText + "\"}")
+                .body(createJSON(questionText, null))
                 .request()
-                .post("/api/questions")
+                .post(API_ENDPOINT_ALL)
                 .thenReturn()
                 .as(Question.class);
-        assertThat("The text is not equal", question.getQuestion(), is(questionText));
-        assertThat("The id should not be 0", question.getQuestionId(), is(not(0)));
-        assertThat("The version should not be 0", question.getVersion(), is(not(0)));
+        assertQuestion(question, questionText);
 
         // read all
-        get("/api/questions").then()
+        get(API_ENDPOINT_ALL).then()
                 .assertThat()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body(containsString(questionText));
 
         // read one
-        get("/api/questions/" + question.getQuestionId()).then()
+        get(API_PREFIX_ONE + question.getQuestionId()).then()
                 .assertThat()
-                .statusCode(200)
-                .body("question", equalTo(questionText))
-                .body("questionId", not(is(0L)))
-                .body("version", not(is(0L)));
+                .statusCode(SC_OK)
+                .body(PROPERTY_QUESTION_TEXT, equalTo(questionText))
+                .body(PROPERTY_QUESTION_ID, not(is(0L)))
+                .body(PROPERTY_VERSION, not(is(0L)));
 
         // update
         questionText += " (Updated)";
         question = given()
-                .body("{\"question\":\"" + questionText + "\",\"version\":" + question.getVersion() + "}")
+                .body(createJSON(questionText, question.getVersion()))
                 .request()
-                .put("/api/questions/" + question.getQuestionId())
+                .put(API_PREFIX_ONE + question.getQuestionId())
                 .thenReturn()
                 .as(Question.class);
+        assertQuestion(question, questionText);
+
+        // read one
+        get(API_PREFIX_ONE + question.getQuestionId()).then()
+                .assertThat()
+                .statusCode(SC_OK)
+                .body(PROPERTY_QUESTION_TEXT, equalTo(questionText))
+                .body(PROPERTY_QUESTION_ID, not(is(0L)))
+                .body(PROPERTY_VERSION, not(is(0L)));
+
+        // delete
+        delete(API_PREFIX_ONE + question.getQuestionId()).then()
+                .assertThat()
+                .statusCode(SC_NO_CONTENT);
+        get(API_PREFIX_ONE + question.getQuestionId()).then()
+                .assertThat()
+                .statusCode(SC_NOT_FOUND);
+    }
+
+    private static String createJSON(@NotNull final String text,
+                                     Long version) {
+        final StringBuilder json = new StringBuilder("{\"" + PROPERTY_QUESTION_TEXT + "\":\"" + text + "\"");
+        if (version != null) {
+            json.append(",\"").append(PROPERTY_VERSION).append("\":").append(version);
+        }
+        json.append("}");
+        return json.toString();
+    }
+
+    private static void assertQuestion(@NotNull final Question question,
+                                       @NotNull final String questionText) {
         assertThat("The text is not equal", question.getQuestion(), is(questionText));
         assertThat("The id should not be 0", question.getQuestionId(), is(not(0)));
         assertThat("The version should not be 0", question.getVersion(), is(not(0)));
-
-        // read one
-        get("/api/questions/" + question.getQuestionId()).then()
-                .assertThat()
-                .statusCode(200)
-                .body("question", equalTo(questionText))
-                .body("questionId", not(is(0L)))
-                .body("version", not(is(0L)));
-
-        // delete
-        delete("/api/questions/" + question.getQuestionId()).then()
-                .assertThat()
-                .statusCode(204);
-        get("/api/questions/" + question.getQuestionId()).then()
-                .assertThat()
-                .statusCode(404);
     }
 
 }

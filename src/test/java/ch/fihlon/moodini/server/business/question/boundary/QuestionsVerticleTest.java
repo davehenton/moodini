@@ -58,6 +58,10 @@ public class QuestionsVerticleTest {
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private static final String HEADER_LOCATION = "Location";
+    private static final String HOSTNAME = "localhost";
+    private static final String API_ENDPOINT = "/api/questions";
+    private static final int SC_OK = 200;
+    private static final int SC_CREATED = 201;
 
     private Vertx vertx;
 
@@ -85,7 +89,7 @@ public class QuestionsVerticleTest {
         final ServerSocket socket = new ServerSocket(0);
         port = socket.getLocalPort();
         socket.close();
-        DeploymentOptions options = new DeploymentOptions()
+        final DeploymentOptions options = new DeploymentOptions()
                 .setConfig(new JsonObject().put("http.port", port));
         vertx.deployVerticle(QuestionsVerticle.class.getName(), options, context.asyncAssertSuccess());
     }
@@ -101,13 +105,13 @@ public class QuestionsVerticleTest {
         final Async async = context.async();
         final String json = Json.encodePrettily(Question.builder().question(QUESTION_TEXT).build());
         final String length = Integer.toString(json.length());
-        vertx.createHttpClient().post(port, "localhost", "/api/questions")
+        vertx.createHttpClient().post(port, HOSTNAME, API_ENDPOINT)
                 .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .putHeader(HEADER_CONTENT_LENGTH, length)
                 .handler(response -> {
-                    context.assertEquals(response.statusCode(), 201);
+                    context.assertEquals(response.statusCode(), SC_CREATED);
                     context.assertTrue(response.headers().get(HEADER_LOCATION)
-                            .startsWith("/api/questions/"));
+                            .startsWith(API_ENDPOINT + "/"));
                     final MultiMap h = response.headers();
                     final String ct = h.get(HEADER_CONTENT_TYPE);
                     context.assertTrue(ct.contains(CONTENT_TYPE_APPLICATION_JSON));
@@ -127,9 +131,9 @@ public class QuestionsVerticleTest {
     public void testReadAll(@NotNull final TestContext context) {
         final Async async = context.async();
 
-        vertx.createHttpClient().getNow(port, "localhost", "/api/questions",
+        vertx.createHttpClient().getNow(port, HOSTNAME, API_ENDPOINT,
                 response -> {
-                    context.assertEquals(response.statusCode(), 200);
+                    context.assertEquals(response.statusCode(), SC_OK);
                     context.assertTrue(response.headers().get(HEADER_CONTENT_TYPE)
                             .contains(CONTENT_TYPE_APPLICATION_JSON));
                     response.bodyHandler(body -> {

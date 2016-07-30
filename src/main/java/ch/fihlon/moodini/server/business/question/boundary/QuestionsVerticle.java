@@ -39,6 +39,15 @@ import java.util.Optional;
  */
 public class QuestionsVerticle extends AbstractVerticle {
 
+    private static final int DEFAULT_HTTP_PORT = 8080;
+    private static final int SC_CREATED = 201;
+    private static final int SC_NO_CONTENT = 204;
+    private static final int SC_NOT_FOUND = 404;
+    private static final String PARAM_NAME_ID = "id";
+    private static final String HEADER_LOCATION = "Location";
+    private static final String HEADER_CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json; charset=utf-8";
+
     @Inject
     private QuestionService questionService;
 
@@ -47,13 +56,14 @@ public class QuestionsVerticle extends AbstractVerticle {
         Injector.injectMembers(this);
 
         // Create a router object.
-        Router router = Router.router(vertx);
+        final Router router = Router.router(vertx);
 
         // Add the body handler
         router.route("/api/questions*").handler(BodyHandler.create())
                 .failureHandler(this::failueHandler);
 
         // Add the routing
+        // CHECKSTYLE DISABLE MultipleStringLiterals FOR 7 LINES
         router.post("/api/questions").handler(this::create);
         router.get("/api/questions").handler(this::list);
         router.get("/api/questions/latest").handler(this::latest);
@@ -69,7 +79,7 @@ public class QuestionsVerticle extends AbstractVerticle {
                 .listen(
                         // Retrieve the port from the configuration,
                         // default to 8080.
-                        config().getInteger("http.port", 8080),
+                        config().getInteger("http.port", DEFAULT_HTTP_PORT),
                         result -> {
                             if (result.succeeded()) {
                                 fut.complete();
@@ -91,7 +101,7 @@ public class QuestionsVerticle extends AbstractVerticle {
     }
 
     private void vote(RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam("id"));
+        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final String body = routingContext.getBodyAsString();
         final Answer answer = Answer.valueOf(body);
         questionService.vote(id, answer);
@@ -101,20 +111,20 @@ public class QuestionsVerticle extends AbstractVerticle {
 
     private void list(RoutingContext routingContext) {
         routingContext.response()
-                .putHeader("Content-Type", "application/json; charset=utf-8")
+                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(questionService.readAll()));
     }
 
     private void read(RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam("id"));
+        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final Optional<Question> question = questionService.read(id);
         if (question.isPresent()) {
             routingContext.response()
-                    .putHeader("Content-Type", "application/json; charset=utf-8")
+                    .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                     .end(Json.encodePrettily(question.get()));
         } else {
             routingContext.response()
-                    .setStatusCode(404)
+                    .setStatusCode(SC_NOT_FOUND)
                     .end();
         }
     }
@@ -122,7 +132,7 @@ public class QuestionsVerticle extends AbstractVerticle {
     private void latest(RoutingContext routingContext) {
         final Question question = questionService.readLatest();
         routingContext.response()
-                .putHeader("Content-Type", "application/json; charset=utf-8")
+                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(question));
     }
 
@@ -134,27 +144,27 @@ public class QuestionsVerticle extends AbstractVerticle {
         final String location = routingContext.normalisedPath() +
                 File.separator + createdQuestion.getQuestionId().toString();
         routingContext.response()
-                .setStatusCode(201)
-                .putHeader("Location", location)
-                .putHeader("Content-Type", "application/json; charset=utf-8")
+                .setStatusCode(SC_CREATED)
+                .putHeader(HEADER_LOCATION, location)
+                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(createdQuestion));
     }
 
     private void update(RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam("id"));
+        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final Question question = Json.decodeValue(routingContext.getBodyAsString(),
                 Question.class).toBuilder().questionId(id).build();
         final Question updatedQuestion = questionService.update(question);
         routingContext.response()
-                .putHeader("Content-Type", "application/json; charset=utf-8")
+                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(updatedQuestion));
     }
 
     private void delete(RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam("id"));
+        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         questionService.delete(id);
         routingContext.response()
-                .setStatusCode(204)
+                .setStatusCode(SC_NO_CONTENT)
                 .end();
     }
 

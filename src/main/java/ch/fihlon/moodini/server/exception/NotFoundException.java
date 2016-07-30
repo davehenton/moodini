@@ -23,7 +23,9 @@ package ch.fihlon.moodini.server.exception;
  */
 public class NotFoundException extends StatusCodeException {
 
+    private static final int SC_NOT_FOUND = 404;
+
     public NotFoundException() {
-        super(404);
+        super(SC_NOT_FOUND);
     }
 }

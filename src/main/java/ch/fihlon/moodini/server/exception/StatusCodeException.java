@@ -26,7 +26,9 @@ import javax.validation.constraints.NotNull;
  */
 public abstract class StatusCodeException extends RuntimeException {
 
-    private Integer statusCode = 500;
+    private static final int SC_INTERNAL_SERVER_ERROR = 500;
+
+    private Integer statusCode = SC_INTERNAL_SERVER_ERROR;
 
     StatusCodeException(@NotNull final Integer statusCode) {
         this.statusCode = statusCode;
