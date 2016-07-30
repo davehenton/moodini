@@ -143,6 +143,13 @@
             <property name="separateLineBetweenGroups" value="true" />
         </module>
 
+        <!-- Checks for Size Violations.                    -->
+        <!-- See http://checkstyle.sf.net/config_sizes.html -->
+        <module name="LineLength">
+            <property name="max" value="120" />
+            <!-- Ignore import statements -->
+            <property name="ignorePattern" value="^import\s.*$" />
+        </module>
     </module>
 
 </module>
