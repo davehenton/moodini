@@ -155,6 +155,9 @@
             <!-- Ignore empty lines and comments -->
             <property name="countEmpty" value="false" />
         </module>
+        <module name="ParameterNumber">
+            <property name="max" value="3" />
+        </module>
     </module>
 
 </module>
