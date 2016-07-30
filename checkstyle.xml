@@ -46,6 +46,12 @@
         <property name="ignoreLines" value="3" />
     </module>
 
+    <!-- Checks for Tab characters -->
+    <!-- See http://checkstyle.sourceforge.net/config_whitespace.html#FileTabCharacter -->
+    <module name="FileTabCharacter">
+        <property name="fileExtensions" value="java" />
+    </module>
+
     <module name="TreeWalker">
 
         <module name="ImportControl">
