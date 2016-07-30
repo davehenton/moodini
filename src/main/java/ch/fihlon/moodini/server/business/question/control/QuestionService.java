@@ -65,7 +65,7 @@ public class QuestionService {
     }
 
     public void delete(@NotNull final Long questionId) {
-        final Question oldQuestion = read(questionId).orElseThrow(NotFoundException::new);
+        read(questionId).orElseThrow(NotFoundException::new);
         controller.execute((ctrl) -> ctrl.delete(questionId));
     }
 
