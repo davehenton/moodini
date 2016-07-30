@@ -173,6 +173,11 @@
         <module name="WhitespaceAround" />
         <module name="GenericWhitespace" />
 
+        <!-- Modifier Checks                                    -->
+        <!-- See http://checkstyle.sf.net/config_modifiers.html -->
+        <module name="ModifierOrder" />
+        <module name="RedundantModifier" />
+
     </module>
 
 </module>
