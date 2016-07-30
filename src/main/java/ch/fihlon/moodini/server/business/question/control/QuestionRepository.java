@@ -91,8 +91,8 @@ class QuestionRepository implements Serializable {
         questions.remove(questionId);
     }
 
-    Long vote(@NotNull Long questionId,
-              @NotNull Answer answer) {
+    Long vote(@NotNull final Long questionId,
+              @NotNull final Answer answer) {
         if (!questions.containsKey(questionId)) {
             throw new NotFoundException();
         }
@@ -100,7 +100,8 @@ class QuestionRepository implements Serializable {
         return counter.incrementAndGet();
     }
 
-    private AtomicLong getCounter(@NotNull final Long questionId, @NotNull final Answer answer) {
+    private AtomicLong getCounter(@NotNull final Long questionId,
+                                  @NotNull final Answer answer) {
         final Map<Answer, AtomicLong> answers = getAnswers(questionId);
         if (!answers.containsKey(answer)) {
             synchronized (answers) {

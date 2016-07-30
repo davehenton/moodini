@@ -114,7 +114,7 @@ public class QuestionsVerticleIT {
     }
 
     private static String createJSON(@NotNull final String text,
-                                     Long version) {
+                                     final Long version) {
         final StringBuilder json = new StringBuilder("{\"" + PROPERTY_QUESTION_TEXT + "\":\"" + text + "\"");
         if (version != null) {
             json.append(",\"").append(PROPERTY_VERSION).append("\":").append(version);

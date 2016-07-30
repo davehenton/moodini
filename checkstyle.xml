@@ -38,6 +38,10 @@
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation" />
 
+    <!-- Checks properties files for duplicated properties.                      -->
+    <!-- See http://checkstyle.sourceforge.net/config_misc.html#UniqueProperties -->
+    <module name="UniqueProperties" />
+
     <!-- Checks for Headers                                              -->
     <!-- See http://checkstyle.sourceforge.net/config_header.html#Header -->
     <module name="Header">
@@ -254,6 +258,21 @@
         <module name="VisibilityModifier">
             <property name="protectedAllowed" value="true" />
         </module>
+
+        <!-- Miscellaneous other checks.                   -->
+        <!-- See http://checkstyle.sf.net/config_misc.html -->
+        <module name="ArrayTypeStyle" />
+        <module name="CommentsIndentation" />
+        <module name="FinalParameters" />
+        <module name="Indentation" />
+        <module name="OuterTypeFilename" />
+        <module name="TodoComment">
+            <property name="format" value="(TODO)|(FIXME)" />
+            <property name="severity" value="info" />
+        </module>
+        <module name="TrailingComment" />
+        <module name="UpperEll" />
+        <module name="UncommentedMain" />
 
     </module>
 

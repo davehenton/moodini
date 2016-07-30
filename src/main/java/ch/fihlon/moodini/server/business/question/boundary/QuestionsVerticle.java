@@ -30,6 +30,7 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class QuestionsVerticle extends AbstractVerticle {
     private QuestionService questionService;
 
     @Override
-    public void start(Future<Void> fut) {
+    public void start(@NotNull final Future<Void> fut) {
         Injector.injectMembers(this);
 
         // Create a router object.
@@ -74,23 +75,23 @@ public class QuestionsVerticle extends AbstractVerticle {
 
         // Create the HTTP server and pass the "accept" method to the request handler.
         vertx
-                .createHttpServer()
-                .requestHandler(router::accept)
-                .listen(
-                        // Retrieve the port from the configuration,
-                        // default to 8080.
-                        config().getInteger("http.port", DEFAULT_HTTP_PORT),
-                        result -> {
-                            if (result.succeeded()) {
-                                fut.complete();
-                            } else {
-                                fut.fail(result.cause());
-                            }
-                        }
-                );
+            .createHttpServer()
+            .requestHandler(router::accept)
+            .listen(
+                // Retrieve the port from the configuration,
+                // default to 8080.
+                config().getInteger("http.port", DEFAULT_HTTP_PORT),
+                result -> {
+                    if (result.succeeded()) {
+                        fut.complete();
+                    } else {
+                        fut.fail(result.cause());
+                    }
+                }
+            );
     }
 
-    private void failueHandler(RoutingContext routingContext) {
+    private void failueHandler(@NotNull final RoutingContext routingContext) {
         @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
         final Throwable failure = routingContext.failure();
         if (failure instanceof StatusCodeException) {
@@ -100,7 +101,7 @@ public class QuestionsVerticle extends AbstractVerticle {
         routingContext.response().end();
     }
 
-    private void vote(RoutingContext routingContext) {
+    private void vote(@NotNull final RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final String body = routingContext.getBodyAsString();
         final Answer answer = Answer.valueOf(body);
@@ -109,13 +110,13 @@ public class QuestionsVerticle extends AbstractVerticle {
                 .end();
     }
 
-    private void list(RoutingContext routingContext) {
+    private void list(@NotNull final RoutingContext routingContext) {
         routingContext.response()
                 .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(questionService.readAll()));
     }
 
-    private void read(RoutingContext routingContext) {
+    private void read(@NotNull final RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final Optional<Question> question = questionService.read(id);
         if (question.isPresent()) {
@@ -129,14 +130,14 @@ public class QuestionsVerticle extends AbstractVerticle {
         }
     }
 
-    private void latest(RoutingContext routingContext) {
+    private void latest(@NotNull final RoutingContext routingContext) {
         final Question question = questionService.readLatest();
         routingContext.response()
                 .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
                 .end(Json.encodePrettily(question));
     }
 
-    private void create(RoutingContext routingContext) {
+    private void create(@NotNull final RoutingContext routingContext) {
         final String body = routingContext.getBodyAsString();
         final Question question = Json.decodeValue(body,
                 Question.class);
@@ -150,7 +151,7 @@ public class QuestionsVerticle extends AbstractVerticle {
                 .end(Json.encodePrettily(createdQuestion));
     }
 
-    private void update(RoutingContext routingContext) {
+    private void update(@NotNull final RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final Question question = Json.decodeValue(routingContext.getBodyAsString(),
                 Question.class).toBuilder().questionId(id).build();
@@ -160,7 +161,7 @@ public class QuestionsVerticle extends AbstractVerticle {
                 .end(Json.encodePrettily(updatedQuestion));
     }
 
-    private void delete(RoutingContext routingContext) {
+    private void delete(@NotNull final RoutingContext routingContext) {
         final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         questionService.delete(id);
         routingContext.response()

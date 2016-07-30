@@ -106,25 +106,25 @@ public class QuestionsVerticleTest {
         final String json = Json.encodePrettily(Question.builder().question(QUESTION_TEXT).build());
         final String length = Integer.toString(json.length());
         vertx.createHttpClient().post(port, HOSTNAME, API_ENDPOINT)
-                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
-                .putHeader(HEADER_CONTENT_LENGTH, length)
-                .handler(response -> {
-                    context.assertEquals(response.statusCode(), SC_CREATED);
-                    context.assertTrue(response.headers().get(HEADER_LOCATION)
-                            .startsWith(API_ENDPOINT + "/"));
-                    final MultiMap h = response.headers();
-                    final String ct = h.get(HEADER_CONTENT_TYPE);
-                    context.assertTrue(ct.contains(CONTENT_TYPE_APPLICATION_JSON));
-                    response.bodyHandler(body -> {
-                        final Question question = Json.decodeValue(body.toString(), Question.class);
-                        context.assertEquals(question.getQuestion(), QUESTION_TEXT);
-                        context.assertEquals(question.getQuestionId(), QUESTION_ID);
-                        context.assertEquals(question.getVersion(), QUESTION_VERSION);
-                        async.complete();
-                    });
-                })
-                .write(json)
-                .end();
+            .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+            .putHeader(HEADER_CONTENT_LENGTH, length)
+            .handler(response -> {
+                context.assertEquals(response.statusCode(), SC_CREATED);
+                context.assertTrue(response.headers().get(HEADER_LOCATION)
+                        .startsWith(API_ENDPOINT + "/"));
+                final MultiMap h = response.headers();
+                final String ct = h.get(HEADER_CONTENT_TYPE);
+                context.assertTrue(ct.contains(CONTENT_TYPE_APPLICATION_JSON));
+                response.bodyHandler(body -> {
+                    final Question question = Json.decodeValue(body.toString(), Question.class);
+                    context.assertEquals(question.getQuestion(), QUESTION_TEXT);
+                    context.assertEquals(question.getQuestionId(), QUESTION_ID);
+                    context.assertEquals(question.getVersion(), QUESTION_VERSION);
+                    async.complete();
+                });
+            })
+            .write(json)
+            .end();
     }
 
     @Test
@@ -132,15 +132,15 @@ public class QuestionsVerticleTest {
         final Async async = context.async();
 
         vertx.createHttpClient().getNow(port, HOSTNAME, API_ENDPOINT,
-                response -> {
-                    context.assertEquals(response.statusCode(), SC_OK);
-                    context.assertTrue(response.headers().get(HEADER_CONTENT_TYPE)
-                            .contains(CONTENT_TYPE_APPLICATION_JSON));
-                    response.bodyHandler(body -> {
-                        context.assertTrue(body.toString().contains(QUESTION_TEXT));
-                        async.complete();
-                    });
+            response -> {
+                context.assertEquals(response.statusCode(), SC_OK);
+                context.assertTrue(response.headers().get(HEADER_CONTENT_TYPE)
+                        .contains(CONTENT_TYPE_APPLICATION_JSON));
+                response.bodyHandler(body -> {
+                    context.assertTrue(body.toString().contains(QUESTION_TEXT));
+                    async.complete();
                 });
+            });
     }
 
 }
