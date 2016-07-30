@@ -28,9 +28,9 @@ import java.time.LocalDateTime;
 import static com.jayway.restassured.RestAssured.delete;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -58,9 +58,9 @@ public class QuestionVerticleIT {
                 .post("/api/questions")
                 .thenReturn()
                 .as(Question.class);
-        assertThat(question.getQuestion()).isEqualTo(questionText);
-        assertThat(question.getQuestionId()).isNotZero();
-        assertThat(question.getVersion()).isNotZero();
+        assertThat(question.getQuestion(), is(questionText));
+        assertThat(question.getQuestionId(), is(not(0)));
+        assertThat(question.getVersion(), is(not(0)));
 
         // read all
         get("/api/questions").then()
@@ -84,9 +84,9 @@ public class QuestionVerticleIT {
                 .put("/api/questions/" + question.getQuestionId())
                 .thenReturn()
                 .as(Question.class);
-        assertThat(question.getQuestion()).isEqualTo(questionText);
-        assertThat(question.getQuestionId()).isNotZero();
-        assertThat(question.getVersion()).isNotZero();
+        assertThat(question.getQuestion(), is(questionText));
+        assertThat(question.getQuestionId(), is(not(0)));
+        assertThat(question.getVersion(), is(not(0)));
 
         // read one
         get("/api/questions/" + question.getQuestionId()).then()
