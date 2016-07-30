@@ -17,6 +17,10 @@
  */
 package ch.fihlon.moodini.server.exception;
 
+/**
+ * This implementation of an exception is mapped to a HTTP status code of
+ * "404 NOT FOUND".
+ */
 public class NotFoundException extends StatusCodeException {
 
     public NotFoundException() {

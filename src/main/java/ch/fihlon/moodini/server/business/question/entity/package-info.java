@@ -15,4 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * This entity package contains objects representing system data: Questions,
+ * Answers, etc.
+ */
 package ch.fihlon.moodini.server.business.question.entity;

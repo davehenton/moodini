@@ -29,6 +29,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
+/**
+ * This entity class is representing a question.
+ */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
@@ -45,6 +48,9 @@ public class Question implements Serializable {
     @Length(max=100)
     private String question;
 
+    /**
+     * This is the builder for the {@link Question}.
+     */
     @JsonPOJOBuilder(withPrefix = "")
     public static final class QuestionBuilder {
     }

@@ -26,6 +26,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Supplier;
 
+/**
+ * This utility class is responsible for creating the controllers to connect to
+ * the persistence store.
+ */
 @Slf4j
 @UtilityClass
 public class PersistenceManager {

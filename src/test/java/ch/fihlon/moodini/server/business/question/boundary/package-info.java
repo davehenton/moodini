@@ -15,4 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * This boundary package contains tests for objects that interface with system
+ * actors: user interfaces, gateways, proxies, etc.
+ */
 package ch.fihlon.moodini.server.business.question.boundary;

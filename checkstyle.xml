@@ -66,7 +66,11 @@
 
     <!-- Uses individual comments to suppress audit events                                         -->
     <!-- See http://checkstyle.sourceforge.net/config_filters.html#SuppressWithNearbyCommentFilter -->
-    <module name="SuppressWithNearbyCommentFilter" />
+    <module name="SuppressWithNearbyCommentFilter">
+        <property name="commentFormat" value="CHECKSTYLE DISABLE ([\w\|]+) FOR (-?\d+) LINES" />
+        <property name="checkFormat" value="$1" />
+        <property name="influenceFormat" value="$2" />
+    </module>
 
     <module name="TreeWalker">
 
@@ -74,6 +78,30 @@
 
         <!-- Ensure that CHECKSTYLE:OFF comments are available to the filter -->
         <module name="FileContentsHolder" />
+
+        <!-- Ensure that @SuppessWarnings are available to the filter -->
+        <module name="SuppressWarningsHolder" />
+
+        <!-- Checks for Javadoc comments.                     -->
+        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+        <module name="JavadocMethod">
+            <property name="scope" value="public" />
+            <property name="allowUndeclaredRTE" value="true" />
+            <property name="allowMissingJavadoc" value="true" />
+        </module>
+        <module name="JavadocType">
+            <!-- <property name="authorFormat" value="null" /> -->
+            <!-- It is unfortunate to have to do this but checkstyle doesn't allow custom tags -->
+            <property name="allowUnknownTags" value="true" />
+        </module>
+        <module name="JavadocVariable">
+            <property name="scope" value="protected" />
+        </module>
+        <module name="JavadocStyle">
+            <property name="scope" value="public" />
+            <!-- the checkHtml check is disabled as it generates incorrect errors -->
+            <property name="checkHtml" value="false" />
+        </module>
 
         <module name="ImportControl">
             <property name="severity" value="error" />

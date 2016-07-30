@@ -34,6 +34,9 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+/**
+ * This is the unit test for the class {@link PersistenceManager}.
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SimpleController.class)
 public class PersistenceManagerTest {

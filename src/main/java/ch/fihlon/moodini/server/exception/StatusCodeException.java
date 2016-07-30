@@ -19,6 +19,11 @@ package ch.fihlon.moodini.server.exception;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * This is the base class of all custom exceptions used in this project and
+ * allows the custom exception to specify a HTTP status code which is used by
+ * the Vert.x error handler to create a more meaningful HTTP error response.
+ */
 public abstract class StatusCodeException extends RuntimeException {
 
     private Integer statusCode = 500;

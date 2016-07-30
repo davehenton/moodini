@@ -45,6 +45,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * This is the unit test for the class {@link QuestionsVerticle}.
+ */
 @RunWith(VertxUnitRunner.class)
 public class QuestionsVerticleTest {
 

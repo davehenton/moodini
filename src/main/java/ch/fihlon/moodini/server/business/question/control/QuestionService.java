@@ -28,6 +28,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This singleton is a service for working with {@link Question}s.
+ */
 @Singleton
 public class QuestionService {
 

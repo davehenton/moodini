@@ -19,5 +19,8 @@ package ch.fihlon.moodini.server;
 
 import java.io.Serializable;
 
+/**
+ * Simple mock class used by the {@link PersistenceManagerTest}.
+ */
 public class PersistenceManagerTestClass implements Serializable {
 }

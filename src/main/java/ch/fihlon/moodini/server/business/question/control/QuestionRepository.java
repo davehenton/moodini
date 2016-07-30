@@ -33,6 +33,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * This class is the repository of {@link Question}s.
+ * It represents the persistence layer.
+ */
 class QuestionRepository implements Serializable {
 
     private static final long serialVersionUID = 1L;

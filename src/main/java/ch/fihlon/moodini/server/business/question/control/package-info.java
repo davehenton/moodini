@@ -15,4 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * This control package contains objects that mediate between boundaries and
+ * entities. They orchestrate the execution of commands coming from the
+ * boundary.
+ */
 package ch.fihlon.moodini.server.business.question.control;

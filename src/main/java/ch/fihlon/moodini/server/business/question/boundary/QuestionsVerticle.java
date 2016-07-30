@@ -33,6 +33,10 @@ import javax.inject.Inject;
 import java.io.File;
 import java.util.Optional;
 
+/**
+ * This verticle is the entry point fo the HTTP requests to the RESTful JSON
+ * interface of the {@link Question}s resources.
+ */
 public class QuestionsVerticle extends AbstractVerticle {
 
     @Inject

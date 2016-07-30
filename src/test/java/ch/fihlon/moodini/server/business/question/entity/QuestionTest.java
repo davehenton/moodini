@@ -23,6 +23,9 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * This is the unit test for the class {@link Question}.
+ */
 public class QuestionTest {
 
     private static final Long QUESTION_ID = 1L;

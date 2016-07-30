@@ -24,6 +24,10 @@ import lombok.experimental.UtilityClass;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * This utility class wraps the Google Guice injection to inject mocks and stubs
+ * with less code.
+ */
 @UtilityClass
 public class Injector {
 
@@ -45,10 +49,14 @@ public class Injector {
         module = createModule();
     }
 
+    /**
+     * This implementation of the injector module has no specific configuration
+     * and is used at runtime. It can be replaced by unit tests to easy inject
+     * mocks and stubs into the testee.
+     */
     private static class InjectorModule extends AbstractModule {
         @Override
         protected void configure() {
-
         }
     }
 

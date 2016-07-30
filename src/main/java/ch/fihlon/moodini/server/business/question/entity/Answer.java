@@ -23,8 +23,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * This enum represents all possible answers for a vote.
+ */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Answer implements Serializable {
+
+    // CHECKSTYLE DISABLE JavadocVariable FOR 5 LINES
     AMPED("Amped"),
     GOOD("Good"),
     FINE("Fine"),

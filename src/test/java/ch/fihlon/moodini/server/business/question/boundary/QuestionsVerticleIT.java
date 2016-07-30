@@ -34,7 +34,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
-public class QuestionVerticleIT {
+/**
+ * This is the integration test for the class {@link QuestionsVerticle}.
+ */
+public class QuestionsVerticleIT {
 
     @BeforeClass
     public static void configureRestAssured() {

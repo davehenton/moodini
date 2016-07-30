@@ -22,6 +22,9 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * This is the unit test for the enum {@link Answer}.
+ */
 public class AnswerTest {
 
     @Test
