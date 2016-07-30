@@ -27,11 +27,16 @@
     <!-- Framework and library whitelist -->
     <allow pkg="com.fasterxml.jackson" />
     <allow pkg="com.google.inject" />
+    <allow pkg="com.jayway.restassured" />
     <allow pkg="io.vertx" />
     <allow pkg="java" />
     <allow pkg="javax" />
     <allow pkg="lombok" />
+    <allow pkg="org.hamcrest" />
     <allow pkg="org.hibernate.validator" />
+    <allow pkg="org.junit" />
+    <allow pkg="org.mockito" />
+    <allow pkg="org.powermock" />
     <allow pkg="pl.setblack.airomem" />
 
     <!-- Disallow sun.* imports as they are not guaranteed to be the same across all JVMs -->
