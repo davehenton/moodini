@@ -34,6 +34,18 @@
         <property name="lineSeparator" value="lf" />
     </module>
 
+    <!-- Checks that property files contain the same keys.         -->
+    <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
+    <module name="Translation" />
+
+    <!-- Checks for Headers                                              -->
+    <!-- See http://checkstyle.sourceforge.net/config_header.html#Header -->
+    <module name="Header">
+        <property name="headerFile" value="checkstyle-header.txt" />
+        <property name="fileExtensions" value="java" />
+        <property name="ignoreLines" value="3" />
+    </module>
+
     <module name="TreeWalker">
 
         <module name="ImportControl">
