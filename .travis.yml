@@ -17,6 +17,7 @@ after_success:
   - docker tag -f $REPO:$COMMIT $REPO:$TAG
   - docker tag -f $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
+  - docker logout
 
 notifications:
   webhooks:
