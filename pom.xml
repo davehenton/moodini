@@ -351,7 +351,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
                 <configuration>
-                    <imageName>mcpringle/${project.artifactId}</imageName>
+                    <imageName>mcpringle/moodini</imageName>
                     <baseImage>java</baseImage>
                     <resources>
                         <resource>
@@ -372,6 +372,7 @@
                     <cmd>java -jar /data/${project.artifactId}-${project.version}-fat.jar</cmd>
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
+                        <imageTag>${env.COMMIT}</imageTag>
                     </imageTags>
                     <forceTags>true</forceTags>
                     <pushImage>false</pushImage>
