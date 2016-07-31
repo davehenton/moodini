@@ -90,7 +90,9 @@ class QuestionRepository implements Serializable {
     }
 
     void delete(@NotNull final Long questionId) {
-        // TODO delete only questions without votes
+        if (!getAnswers(questionId).isEmpty()) {
+            throw new MethodNotAllowedException("It is not allowed to delete questions with votes!");
+        }
         questions.remove(questionId);
     }
 
