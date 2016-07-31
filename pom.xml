@@ -187,6 +187,23 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.10.0</version>
+                <executions>
+                    <execution>
+                        <id>versioneye</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <projectId>579db71c42aaab0009ac1e08</projectId>
+                        </configuration>
+                        <goals>
+                            <goal>securityAndLicenseCheck</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.11</version>
