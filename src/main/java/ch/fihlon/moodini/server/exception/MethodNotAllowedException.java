@@ -17,14 +17,20 @@
  */
 package ch.fihlon.moodini.server.exception;
 
+import javax.validation.constraints.NotNull;
+
 /**
- * This implementation of an exception is mapped to a HTTP status code of "404 NOT FOUND".
+ * This implementation of an exception is mapped to a HTTP status code of "405 METHOD NOT ALLOWED".
  */
-public class NotFoundException extends StatusCodeException {
+public class MethodNotAllowedException extends StatusCodeException {
 
-    private static final int SC_NOT_FOUND = 404;
+    private static final int SC_METHOD_NOT_ALLOWED = 405;
 
-    public NotFoundException() {
-        super(SC_NOT_FOUND);
+    public MethodNotAllowedException() {
+        super(SC_METHOD_NOT_ALLOWED);
+    }
+
+    public MethodNotAllowedException(@NotNull final String message) {
+        super(SC_METHOD_NOT_ALLOWED, message);
     }
 }

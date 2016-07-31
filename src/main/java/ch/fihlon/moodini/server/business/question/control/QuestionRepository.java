@@ -19,6 +19,7 @@ package ch.fihlon.moodini.server.business.question.control;
 
 import ch.fihlon.moodini.server.business.question.entity.Answer;
 import ch.fihlon.moodini.server.business.question.entity.Question;
+import ch.fihlon.moodini.server.exception.MethodNotAllowedException;
 import ch.fihlon.moodini.server.exception.NotFoundException;
 
 import javax.validation.constraints.NotNull;
@@ -58,7 +59,9 @@ class QuestionRepository implements Serializable {
     }
 
     Question update(@NotNull final Question question) {
-        // TODO update only questions without votes
+        if (!getAnswers(question.getQuestionId()).isEmpty()) {
+            throw new MethodNotAllowedException("It is not allowed to update questions with votes!");
+        }
         final Question previousQuestion = read(question.getQuestionId()).orElseThrow(NotFoundException::new);
         if (!previousQuestion.getVersion().equals(question.getVersion())) {
             throw new ConcurrentModificationException("You tried to update a question that was modified concurrently!");

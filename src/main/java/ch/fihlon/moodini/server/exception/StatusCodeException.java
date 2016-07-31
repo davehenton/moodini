@@ -31,6 +31,11 @@ public abstract class StatusCodeException extends RuntimeException {
     private Integer statusCode = SC_INTERNAL_SERVER_ERROR;
 
     StatusCodeException(@NotNull final Integer statusCode) {
+        this(statusCode, null);
+    }
+
+    StatusCodeException(@NotNull final Integer statusCode, @NotNull final String message) {
+        super(message);
         this.statusCode = statusCode;
     }
 
