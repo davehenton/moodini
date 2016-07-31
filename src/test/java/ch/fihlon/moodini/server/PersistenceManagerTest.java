@@ -45,6 +45,7 @@ public class PersistenceManagerTest {
     public void createSimpleController() {
         // arrange
         mockStatic(SimpleController.class);
+        @SuppressWarnings("unchecked")
         final SimpleController<Serializable> simpleControllerMock = mock(SimpleController.class);
         when(SimpleController.loadOptional(anyObject(), anyObject())).thenReturn(simpleControllerMock);
 
