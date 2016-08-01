@@ -41,7 +41,7 @@ public class QuestionService {
      */
     public QuestionService() {
         controller = PersistenceManager.createSimpleController(Question.class, QuestionRepository::new);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> controller.close()));
+        Runtime.getRuntime().addShutdownHook(new Thread(controller::close));
     }
 
     /**
