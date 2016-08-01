@@ -41,5 +41,6 @@
     </rule>
     <rule ref="rulesets/java/empty.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
+    <rule ref="rulesets/java/imports.xml" />
 
 </ruleset>
