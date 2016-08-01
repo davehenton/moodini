@@ -34,7 +34,7 @@ import java.util.Optional;
 @Singleton
 public class QuestionService {
 
-    private SimpleController<QuestionRepository> controller;
+    private final SimpleController<QuestionRepository> controller;
 
     /**
      * This constructor should only be called once because this class is a {@link Singleton}!
