@@ -56,5 +56,6 @@
     <rule ref="rulesets/java/optimizations.xml" />
     <rule ref="rulesets/java/strictexception.xml" />
     <rule ref="rulesets/java/strings.xml" />
+    <rule ref="rulesets/java/sunsecure.xml" />
 
 </ruleset>
