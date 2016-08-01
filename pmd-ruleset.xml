@@ -50,6 +50,7 @@
     </rule>
     <rule ref="rulesets/java/junit.xml" />
     <rule ref="rulesets/java/logging-jakarta-commons.xml" />
+    <rule ref="rulesets/java/logging-java.xml" />
     <rule ref="rulesets/java/migrating_to_junit4.xml" />
     <rule ref="rulesets/java/naming.xml" />
 
