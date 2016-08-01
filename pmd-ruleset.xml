@@ -48,5 +48,7 @@
     <rule ref="rulesets/java/javabeans.xml">
         <exclude name="BeanMembersShouldSerialize" />
     </rule>
+    <rule ref="rulesets/java/junit.xml" />
+    <rule ref="rulesets/java/migrating_to_junit4.xml" />
 
 </ruleset>
