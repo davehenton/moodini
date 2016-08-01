@@ -10,5 +10,6 @@
 
     <rule ref="rulesets/java/basic.xml" />
     <rule ref="rulesets/java/braces.xml" />
+    <rule ref="rulesets/java/clone.xml" />
 
 </ruleset>
