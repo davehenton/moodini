@@ -42,6 +42,11 @@ public enum Answer implements Serializable {
         this.answer = answer;
     }
 
+    /**
+     * Get the {@link String} representation of an {@link Answer}.
+     * 
+     * @return the {@link String} representation of an {@link Answer}
+     */
     @JsonValue
     public String getAnswer() {
         return answer;

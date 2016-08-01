@@ -33,6 +33,7 @@ import java.io.Serializable;
  * This entity class is representing a question.
  */
 @Value
+@SuppressWarnings("PMD.UnusedPrivateField")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @JsonDeserialize(builder = QuestionBuilder.class)

@@ -26,10 +26,18 @@ public class MethodNotAllowedException extends StatusCodeException {
 
     private static final int SC_METHOD_NOT_ALLOWED = 405;
 
+    /**
+     * This constructor creates a {@link MethodNotAllowedException} without a message.
+     */
     public MethodNotAllowedException() {
         super(SC_METHOD_NOT_ALLOWED);
     }
 
+    /**
+     * This constructor creates a {@link MethodNotAllowedException} with a message.
+     *
+     * @param message the message
+     */
     public MethodNotAllowedException(@NotNull final String message) {
         super(SC_METHOD_NOT_ALLOWED, message);
     }

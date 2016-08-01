@@ -36,39 +36,82 @@ public class QuestionService {
 
     private SimpleController<QuestionRepository> controller;
 
+    /**
+     * This constructor should only be called once because this class is a {@link Singleton}!
+     */
     public QuestionService() {
         controller = PersistenceManager.createSimpleController(Question.class, QuestionRepository::new);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> controller.close()));
     }
 
+    /**
+     * Create a new {@link Question}.
+     *
+     * @param question the new {@link Question}
+     * @return the new {@link Question}
+     */
     public Question create(@NotNull final Question question) {
         return controller.executeAndQuery((ctrl) -> ctrl.create(question));
     }
 
+    /**
+     * Update the {@link Question}.
+     *
+     * @param question the updated {@link Question}
+     * @return the updated {@link Question}
+     */
     public Question update(@NotNull final Question question) {
         final Long questionId = question.getQuestionId();
         read(questionId).orElseThrow(NotFoundException::new);
         return controller.executeAndQuery((ctrl) -> ctrl.update(question));
     }
 
+    /**
+     * Read (get) the {@link Question} with the specified id.
+     *
+     * @param questionId the id of a {@link Question}
+     * @return the {@link Question}
+     */
     public Optional<Question> read(@NotNull final Long questionId) {
         return controller.readOnly().read(questionId);
     }
 
+    /**
+     * Read (get) all {@link Question}s.
+     *
+     * @return a {@link List} of all {@link Question}s
+     */
     public List<Question> readAll() {
         return controller.readOnly().readAll();
     }
 
+    /**
+     * Read (get) the latest (newest) {@link Question}.
+     *
+     * @return the latest {@link Question}
+     */
     public Question readLatest() {
         final Optional<Question> optional = controller.readOnly().readLatest();
         return optional.orElseThrow(NotFoundException::new);
     }
 
+    /**
+     * Delete the {@link Question} with the specified id.
+     *
+     * @param questionId the id of a {@link Question}
+     */
     public void delete(@NotNull final Long questionId) {
         read(questionId).orElseThrow(NotFoundException::new);
         controller.execute((ctrl) -> ctrl.delete(questionId));
     }
 
+    /**
+     * Vote for an {@link Answer} of the {@link Question} with the specified id.
+     *
+     * @param questionId the id of a {@link Question}
+     * @param answer the {@link Answer}
+     * @return the number of votes for this {@link Answer}
+     */
     public Long vote(@NotNull final Long questionId,
                      @NotNull final Answer answer) {
         read(questionId).orElseThrow(NotFoundException::new);

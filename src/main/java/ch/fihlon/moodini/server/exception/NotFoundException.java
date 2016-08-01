@@ -24,6 +24,9 @@ public class NotFoundException extends StatusCodeException {
 
     private static final int SC_NOT_FOUND = 404;
 
+    /**
+     * This constructor creates a {@link NotFoundException} without a message.
+     */
     public NotFoundException() {
         super(SC_NOT_FOUND);
     }

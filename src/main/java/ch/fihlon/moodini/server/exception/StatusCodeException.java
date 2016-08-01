@@ -39,6 +39,11 @@ public abstract class StatusCodeException extends RuntimeException {
         this.statusCode = statusCode;
     }
 
+    /**
+     * Get the HTTP status code of this exception.
+     *
+     * @return the HTTP status code
+     */
     public Integer getStatusCode() {
         return statusCode;
     }

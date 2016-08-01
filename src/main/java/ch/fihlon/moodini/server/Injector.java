@@ -33,6 +33,13 @@ public class Injector {
 
     private static Module module = createModule();
 
+    /**
+     * Injects dependencies into the fields and methods of {@code instance}. Ignores the presence or absence of an
+     * injectable constructor.
+     *
+     * @param instance any instance
+     */
+    @SuppressWarnings("PMD.LawOfDemeter")
     public static void injectMembers(@NotNull final Object instance) {
         Guice.createInjector(module).injectMembers(instance);
     }
@@ -41,10 +48,18 @@ public class Injector {
         return new InjectorModule();
     }
 
+    /**
+     * Set the module contributing configuration information, typically interface bindings.
+     *
+     * @param newModule the module contributes configuration information, typically interface bindings
+     */
     public static void setModule(@NotNull final Module newModule) {
         module = newModule;
     }
 
+    /**
+     * Reset the module to the default module instance.
+     */
     public static void resetModule() {
         module = createModule();
     }
@@ -55,8 +70,13 @@ public class Injector {
      * mocks and stubs into the testee.
      */
     private static class InjectorModule extends AbstractModule {
+
+        /**
+         * This is a default implementation providing no additional configuration.
+         */
         @Override
         protected void configure() {
+            /* default */
         }
     }
 

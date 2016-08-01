@@ -12,5 +12,14 @@
     <rule ref="rulesets/java/braces.xml" />
     <rule ref="rulesets/java/clone.xml" />
     <rule ref="rulesets/java/codesize.xml" />
+    <rule ref="rulesets/java/comments.xml">
+        <exclude name="CommentSize" />
+        <exclude name="CommentRequired" />
+    </rule>
+    <rule ref="rulesets/java/comments.xml/CommentRequired">
+        <properties>
+            <property name="fieldCommentRequirement" value="Ignored" />
+        </properties>
+    </rule>
 
 </ruleset>

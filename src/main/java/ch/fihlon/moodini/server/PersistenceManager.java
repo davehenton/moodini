@@ -43,6 +43,14 @@ public class PersistenceManager {
         DATA_DIRECTORY = Paths.get(MOODINI_DIRECTORY_NAME, PREVAYLER_DIRECTORY_NAME);
     }
 
+    /**
+     * Create a {@link SimpleController} for the specified entity using the specified repository constructor.
+     *
+     * @param clazz the entity class
+     * @param constructor the constructor of the repository class
+     * @param <T> the type of the entity, must extend {@link Serializable}
+     * @return a {@link SimpleController} for the entity repository
+     */
     public static <T extends Serializable> SimpleController<T> createSimpleController(
             final Class<? extends Serializable> clazz, final Supplier<T> constructor) {
         final String dir = DATA_DIRECTORY.resolve(clazz.getName()).toString();

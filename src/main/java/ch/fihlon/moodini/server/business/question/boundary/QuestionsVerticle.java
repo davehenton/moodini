@@ -52,8 +52,13 @@ public class QuestionsVerticle extends AbstractVerticle {
     @Inject
     private QuestionService questionService;
 
+    /**
+     * Start this verticle.
+     *
+     * @param future a future which is called when this verticle start-up is complete
+     */
     @Override
-    public void start(@NotNull final Future<Void> fut) {
+    public void start(@NotNull final Future<Void> future) {
         Injector.injectMembers(this);
 
         // Create a router object.
@@ -83,9 +88,9 @@ public class QuestionsVerticle extends AbstractVerticle {
                 config().getInteger("http.port", DEFAULT_HTTP_PORT),
                 result -> {
                     if (result.succeeded()) {
-                        fut.complete();
+                        future.complete();
                     } else {
-                        fut.fail(result.cause());
+                        future.fail(result.cause());
                     }
                 }
             );
