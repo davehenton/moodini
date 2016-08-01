@@ -21,5 +21,16 @@
             <property name="fieldCommentRequirement" value="Ignored" />
         </properties>
     </rule>
+    <rule ref="rulesets/java/controversial.xml">
+        <exclude name="AtLeastOneConstructor" />
+        <exclude name="DataflowAnomalyAnalysis" />
+        <exclude name="DefaultPackage" />
+    </rule>
+    <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
+        <properties>
+            <!-- UR means "undefined reference" which is already detected by the compiler. So we deactivate it. -->
+            <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*" />
+        </properties>
+    </rule>
 
 </ruleset>
