@@ -8,6 +8,7 @@
         This ruleset checks our code for bad stuff
     </description>
 
+    <!-- <rule ref="rulesets/java/android.xml" /> -->
     <rule ref="rulesets/java/basic.xml" />
     <rule ref="rulesets/java/braces.xml" />
     <rule ref="rulesets/java/clone.xml" />
@@ -51,6 +52,10 @@
     <rule ref="rulesets/java/junit.xml" />
     <rule ref="rulesets/java/logging-jakarta-commons.xml" />
     <rule ref="rulesets/java/logging-java.xml" />
+    <!-- <rule ref="rulesets/java/migrating.xml" /> -->
+    <!-- <rule ref="rulesets/java/migrating_to_13.xml" /> -->
+    <!-- <rule ref="rulesets/java/migrating_to_14.xml" /> -->
+    <!-- <rule ref="rulesets/java/migrating_to_15.xml" /> -->
     <rule ref="rulesets/java/migrating_to_junit4.xml" />
     <rule ref="rulesets/java/naming.xml" />
     <rule ref="rulesets/java/optimizations.xml" />
