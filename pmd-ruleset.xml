@@ -45,5 +45,8 @@
     <rule ref="rulesets/java/j2ee.xml">
         <exclude name="DoNotUseThreads" />
     </rule>
+    <rule ref="rulesets/java/javabeans.xml">
+        <exclude name="BeanMembersShouldSerialize" />
+    </rule>
 
 </ruleset>
