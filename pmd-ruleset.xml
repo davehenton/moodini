@@ -39,5 +39,6 @@
     <rule ref="rulesets/java/design.xml">
         <exclude name="UseUtilityClass" />
     </rule>
+    <rule ref="rulesets/java/empty.xml" />
 
 </ruleset>
