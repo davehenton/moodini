@@ -195,6 +195,7 @@
                         <id>pmd</id>
                         <phase>validate</phase>
                         <configuration>
+                            <printFailingErrors>true</printFailingErrors>
                             <linkXref>false</linkXref>
                             <rulesets>
                                 <ruleset>pmd-ruleset.xml</ruleset>
