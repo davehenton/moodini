@@ -54,5 +54,6 @@
     <rule ref="rulesets/java/migrating_to_junit4.xml" />
     <rule ref="rulesets/java/naming.xml" />
     <rule ref="rulesets/java/optimizations.xml" />
+    <rule ref="rulesets/java/strictexception.xml" />
 
 </ruleset>
