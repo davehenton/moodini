@@ -4,6 +4,9 @@ engines:
     enabled: true
   fixme:
     enabled: true
+    exclude_fingerprints:
+        - 1c0f0ba459d8c9b670a6aff7dbdd5364
+        - 175d6ac924e0455910d665624ea69225
 ratings:
   paths:
   - "**.css"
