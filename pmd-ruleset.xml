@@ -40,5 +40,6 @@
         <exclude name="UseUtilityClass" />
     </rule>
     <rule ref="rulesets/java/empty.xml" />
+    <rule ref="rulesets/java/finalizers.xml" />
 
 </ruleset>
