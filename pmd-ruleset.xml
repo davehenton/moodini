@@ -32,5 +32,9 @@
             <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*" />
         </properties>
     </rule>
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LawOfDemeter" />
+        <exclude name="LoosePackageCoupling" />
+    </rule>
 
 </ruleset>

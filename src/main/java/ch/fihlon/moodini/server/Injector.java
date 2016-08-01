@@ -39,7 +39,6 @@ public class Injector {
      *
      * @param instance any instance
      */
-    @SuppressWarnings("PMD.LawOfDemeter")
     public static void injectMembers(@NotNull final Object instance) {
         Guice.createInjector(module).injectMembers(instance);
     }
