@@ -24,17 +24,17 @@ import javax.validation.constraints.NotNull;
  * allows the custom exception to specify a HTTP status code which is used by
  * the Vert.x error handler to create a more meaningful HTTP error response.
  */
-public abstract class StatusCodeException extends RuntimeException {
+public abstract class AbstractStatusCodeException extends RuntimeException {
 
-    private static final int SC_INTERNAL_SERVER_ERROR = 500;
+    private static final int DEF_STATUS_CODE = 500;
 
-    private Integer statusCode = SC_INTERNAL_SERVER_ERROR;
+    private Integer statusCode = DEF_STATUS_CODE;
 
-    StatusCodeException(@NotNull final Integer statusCode) {
+    AbstractStatusCodeException(@NotNull final Integer statusCode) {
         this(statusCode, null);
     }
 
-    StatusCodeException(@NotNull final Integer statusCode, @NotNull final String message) {
+    AbstractStatusCodeException(@NotNull final Integer statusCode, @NotNull final String message) {
         super(message);
         this.statusCode = statusCode;
     }

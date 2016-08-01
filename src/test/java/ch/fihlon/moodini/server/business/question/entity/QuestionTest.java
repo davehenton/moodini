@@ -30,7 +30,7 @@ public class QuestionTest {
 
     private static final Long QUESTION_ID = 1L;
     private static final Long VERSION = 1L;
-    private static final String QUESTION = "Test";
+    private static final String TEXT = "Test";
 
     private Question question;
 
@@ -39,7 +39,7 @@ public class QuestionTest {
         question = Question.builder()
                 .questionId(QUESTION_ID)
                 .version(VERSION)
-                .question(QUESTION)
+                .text(TEXT)
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class QuestionTest {
 
     @Test
     public void getQuestion() {
-        assertThat(question.getQuestion(), is(QUESTION));
+        assertThat(question.getText(), is(TEXT));
     }
 
 }

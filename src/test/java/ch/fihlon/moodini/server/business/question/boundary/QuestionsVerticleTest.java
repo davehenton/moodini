@@ -71,7 +71,7 @@ public class QuestionsVerticleTest {
     @Before
     public void setUp(@NotNull final TestContext context) throws IOException {
         final Question answerQuestion = Question.builder()
-                .question(QUESTION_TEXT)
+                .text(QUESTION_TEXT)
                 .questionId(QUESTION_ID)
                 .version(QUESTION_VERSION)
                 .build();
@@ -103,7 +103,7 @@ public class QuestionsVerticleTest {
     @Test
     public void testCreate(@NotNull final TestContext context) {
         final Async async = context.async();
-        final String json = Json.encodePrettily(Question.builder().question(QUESTION_TEXT).build());
+        final String json = Json.encodePrettily(Question.builder().text(QUESTION_TEXT).build());
         final String length = Integer.toString(json.length());
         vertx.createHttpClient().post(port, HOSTNAME, API_ENDPOINT)
             .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
@@ -117,7 +117,7 @@ public class QuestionsVerticleTest {
                 context.assertTrue(ct.contains(CONTENT_TYPE_APPLICATION_JSON));
                 response.bodyHandler(body -> {
                     final Question question = Json.decodeValue(body.toString(), Question.class);
-                    context.assertEquals(question.getQuestion(), QUESTION_TEXT);
+                    context.assertEquals(question.getText(), QUESTION_TEXT);
                     context.assertEquals(question.getQuestionId(), QUESTION_ID);
                     context.assertEquals(question.getVersion(), QUESTION_VERSION);
                     async.complete();

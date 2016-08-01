@@ -21,7 +21,7 @@ import ch.fihlon.moodini.server.Injector;
 import ch.fihlon.moodini.server.business.question.control.QuestionService;
 import ch.fihlon.moodini.server.business.question.entity.Answer;
 import ch.fihlon.moodini.server.business.question.entity.Question;
-import ch.fihlon.moodini.server.exception.StatusCodeException;
+import ch.fihlon.moodini.server.exception.AbstractStatusCodeException;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.json.Json;
@@ -45,9 +45,9 @@ public class QuestionsVerticle extends AbstractVerticle {
     private static final int SC_NO_CONTENT = 204;
     private static final int SC_NOT_FOUND = 404;
     private static final String PARAM_NAME_ID = "id";
-    private static final String HEADER_LOCATION = "Location";
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json; charset=utf-8";
+    private static final String LOCATION = "Location";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON = "application/json; charset=utf-8";
 
     @Inject
     private QuestionService questionService;
@@ -99,34 +99,34 @@ public class QuestionsVerticle extends AbstractVerticle {
     private void failueHandler(@NotNull final RoutingContext routingContext) {
         @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
         final Throwable failure = routingContext.failure();
-        if (failure instanceof StatusCodeException) {
-            final StatusCodeException exception = (StatusCodeException) failure;
+        if (failure instanceof AbstractStatusCodeException) {
+            final AbstractStatusCodeException exception = (AbstractStatusCodeException) failure;
             routingContext.response().setStatusCode(exception.getStatusCode());
         }
         routingContext.response().end();
     }
 
     private void vote(@NotNull final RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
+        final Long questionId = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final String body = routingContext.getBodyAsString();
         final Answer answer = Answer.valueOf(body);
-        questionService.vote(id, answer);
+        questionService.vote(questionId, answer);
         routingContext.response()
                 .end();
     }
 
     private void list(@NotNull final RoutingContext routingContext) {
         routingContext.response()
-                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+                .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .end(Json.encodePrettily(questionService.readAll()));
     }
 
     private void read(@NotNull final RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
-        final Optional<Question> question = questionService.read(id);
+        final Long questionId = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
+        final Optional<Question> question = questionService.read(questionId);
         if (question.isPresent()) {
             routingContext.response()
-                    .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+                    .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                     .end(Json.encodePrettily(question.get()));
         } else {
             routingContext.response()
@@ -138,7 +138,7 @@ public class QuestionsVerticle extends AbstractVerticle {
     private void latest(@NotNull final RoutingContext routingContext) {
         final Question question = questionService.readLatest();
         routingContext.response()
-                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+                .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .end(Json.encodePrettily(question));
     }
 
@@ -151,24 +151,24 @@ public class QuestionsVerticle extends AbstractVerticle {
                 File.separator + createdQuestion.getQuestionId().toString();
         routingContext.response()
                 .setStatusCode(SC_CREATED)
-                .putHeader(HEADER_LOCATION, location)
-                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+                .putHeader(LOCATION, location)
+                .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .end(Json.encodePrettily(createdQuestion));
     }
 
     private void update(@NotNull final RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
+        final Long questionId = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
         final Question question = Json.decodeValue(routingContext.getBodyAsString(),
-                Question.class).toBuilder().questionId(id).build();
+                Question.class).toBuilder().questionId(questionId).build();
         final Question updatedQuestion = questionService.update(question);
         routingContext.response()
-                .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
+                .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .end(Json.encodePrettily(updatedQuestion));
     }
 
     private void delete(@NotNull final RoutingContext routingContext) {
-        final Long id = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
-        questionService.delete(id);
+        final Long questionId = Long.valueOf(routingContext.request().getParam(PARAM_NAME_ID));
+        questionService.delete(questionId);
         routingContext.response()
                 .setStatusCode(SC_NO_CONTENT)
                 .end();

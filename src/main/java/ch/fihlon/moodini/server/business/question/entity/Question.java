@@ -40,15 +40,15 @@ import java.io.Serializable;
 public class Question implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final int MAX_QUESTION_LENGTH = 100;
+    private static final int MAX_TEXT_LENGTH = 100;
 
     private Long questionId;
 
     private Long version;
 
     @NotEmpty
-    @Length(max = MAX_QUESTION_LENGTH)
-    private String question;
+    @Length(max = MAX_TEXT_LENGTH)
+    private String text;
 
     /**
      * This is the builder for the {@link Question}.

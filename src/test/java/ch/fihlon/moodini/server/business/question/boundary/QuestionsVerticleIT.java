@@ -44,7 +44,7 @@ public class QuestionsVerticleIT {
     private static final int SC_NOT_FOUND = 404;
     private static final String PROPERTY_VERSION = "version";
     private static final String PROPERTY_QUESTION_ID = "questionId";
-    private static final String PROPERTY_QUESTION_TEXT = "question";
+    private static final String PROPERTY_QUESTION_TEXT = "text";
     private static final String API_ENDPOINT_ALL = "/api/questions";
     private static final String API_PREFIX_ONE = "/api/questions/";
 
@@ -125,7 +125,7 @@ public class QuestionsVerticleIT {
 
     private static void assertQuestion(@NotNull final Question question,
                                        @NotNull final String questionText) {
-        assertThat("The text is not equal", question.getQuestion(), is(questionText));
+        assertThat("The text is not equal", question.getText(), is(questionText));
         assertThat("The id should not be 0", question.getQuestionId(), is(not(0)));
         assertThat("The version should not be 0", question.getVersion(), is(not(0)));
     }

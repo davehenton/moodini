@@ -22,15 +22,15 @@ import javax.validation.constraints.NotNull;
 /**
  * This implementation of an exception is mapped to a HTTP status code of "405 METHOD NOT ALLOWED".
  */
-public class MethodNotAllowedException extends StatusCodeException {
+public class MethodNotAllowedException extends AbstractStatusCodeException {
 
-    private static final int SC_METHOD_NOT_ALLOWED = 405;
+    private static final int STATUS_CODE = 405;
 
     /**
      * This constructor creates a {@link MethodNotAllowedException} without a message.
      */
     public MethodNotAllowedException() {
-        super(SC_METHOD_NOT_ALLOWED);
+        super(STATUS_CODE);
     }
 
     /**
@@ -39,6 +39,6 @@ public class MethodNotAllowedException extends StatusCodeException {
      * @param message the message
      */
     public MethodNotAllowedException(@NotNull final String message) {
-        super(SC_METHOD_NOT_ALLOWED, message);
+        super(STATUS_CODE, message);
     }
 }
