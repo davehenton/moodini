@@ -9,5 +9,6 @@
     </description>
 
     <rule ref="rulesets/java/basic.xml" />
+    <rule ref="rulesets/java/braces.xml" />
 
 </ruleset>
