@@ -53,5 +53,6 @@
     <rule ref="rulesets/java/logging-java.xml" />
     <rule ref="rulesets/java/migrating_to_junit4.xml" />
     <rule ref="rulesets/java/naming.xml" />
+    <rule ref="rulesets/java/optimizations.xml" />
 
 </ruleset>
