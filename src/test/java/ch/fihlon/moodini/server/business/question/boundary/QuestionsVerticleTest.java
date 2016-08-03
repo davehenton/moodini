@@ -101,7 +101,7 @@ public class QuestionsVerticleTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert") // PMD does not recognize the TestContext.assert* methods
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void testCreate(@NotNull final TestContext context) {
         final Async async = context.async();
         final String json = Json.encodePrettily(Question.builder().text(QUESTION_TEXT).build());
@@ -129,7 +129,7 @@ public class QuestionsVerticleTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert") // PMD does not recognize the TestContext.assert* methods
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     public void testReadAll(@NotNull final TestContext context) {
         final Async async = context.async();
 
