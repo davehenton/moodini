@@ -42,7 +42,14 @@
     </rule>
     <rule ref="rulesets/java/empty.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
-    <rule ref="rulesets/java/imports.xml" />
+    <rule ref="rulesets/java/imports.xml">
+        <exclude name="TooManyStaticImports" />
+    </rule>
+    <rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+        <properties>
+            <property name="maximumStaticImports" value="10" />
+        </properties>
+    </rule>
     <rule ref="rulesets/java/j2ee.xml">
         <exclude name="DoNotUseThreads" />
     </rule>
