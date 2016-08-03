@@ -54,10 +54,10 @@ public class QuestionsVerticleTest {
     private static final String QUESTION_TEXT = "Do you like testing?";
     private static final Long QUESTION_ID = 1L;
     private static final Long QUESTION_VERSION = 42L;
-    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-    private static final String HEADER_CONTENT_LENGTH = "Content-Length";
-    private static final String HEADER_LOCATION = "Location";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_LENGTH = "Content-Length";
+    private static final String LOCATION = "Location";
     private static final String HOSTNAME = "localhost";
     private static final String API_ENDPOINT = "/api/questions";
     private static final int SC_OK = 200;
@@ -66,7 +66,7 @@ public class QuestionsVerticleTest {
     private Vertx vertx;
 
     @Mock
-    private QuestionService questionServiceMock;
+    private QuestionService serviceMock;
 
     @Before
     public void setUp(@NotNull final TestContext context) throws IOException {
@@ -75,13 +75,13 @@ public class QuestionsVerticleTest {
                 .questionId(QUESTION_ID)
                 .version(QUESTION_VERSION)
                 .build();
-        questionServiceMock = mock(QuestionService.class);
-        when(questionServiceMock.create(any(Question.class))).thenReturn(answerQuestion);
-        when(questionServiceMock.readAll()).thenReturn(singletonList(answerQuestion));
+        serviceMock = mock(QuestionService.class);
+        when(serviceMock.create(any(Question.class))).thenReturn(answerQuestion);
+        when(serviceMock.readAll()).thenReturn(singletonList(answerQuestion));
         Injector.setModule(new AbstractModule() {
             @Override
             protected void configure() {
-                bind(QuestionService.class).toInstance(questionServiceMock);
+                bind(QuestionService.class).toInstance(serviceMock);
             }
         });
 
@@ -101,20 +101,21 @@ public class QuestionsVerticleTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert") // PMD does not recognize the TestContext.assert* methods
     public void testCreate(@NotNull final TestContext context) {
         final Async async = context.async();
         final String json = Json.encodePrettily(Question.builder().text(QUESTION_TEXT).build());
         final String length = Integer.toString(json.length());
         vertx.createHttpClient().post(port, HOSTNAME, API_ENDPOINT)
-            .putHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON)
-            .putHeader(HEADER_CONTENT_LENGTH, length)
+            .putHeader(CONTENT_TYPE, APPLICATION_JSON)
+            .putHeader(CONTENT_LENGTH, length)
             .handler(response -> {
                 context.assertEquals(response.statusCode(), SC_CREATED);
-                context.assertTrue(response.headers().get(HEADER_LOCATION)
+                context.assertTrue(response.headers().get(LOCATION)
                         .startsWith(API_ENDPOINT + "/"));
-                final MultiMap h = response.headers();
-                final String ct = h.get(HEADER_CONTENT_TYPE);
-                context.assertTrue(ct.contains(CONTENT_TYPE_APPLICATION_JSON));
+                final MultiMap headers = response.headers();
+                final String contentType = headers.get(CONTENT_TYPE);
+                context.assertTrue(contentType.contains(APPLICATION_JSON));
                 response.bodyHandler(body -> {
                     final Question question = Json.decodeValue(body.toString(), Question.class);
                     context.assertEquals(question.getText(), QUESTION_TEXT);
@@ -128,14 +129,15 @@ public class QuestionsVerticleTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert") // PMD does not recognize the TestContext.assert* methods
     public void testReadAll(@NotNull final TestContext context) {
         final Async async = context.async();
 
         vertx.createHttpClient().getNow(port, HOSTNAME, API_ENDPOINT,
             response -> {
                 context.assertEquals(response.statusCode(), SC_OK);
-                context.assertTrue(response.headers().get(HEADER_CONTENT_TYPE)
-                        .contains(CONTENT_TYPE_APPLICATION_JSON));
+                context.assertTrue(response.headers().get(CONTENT_TYPE)
+                        .contains(APPLICATION_JSON));
                 response.bodyHandler(body -> {
                     context.assertTrue(body.toString().contains(QUESTION_TEXT));
                     async.complete();

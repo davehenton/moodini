@@ -26,7 +26,9 @@ import org.junit.Test;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-import static com.jayway.restassured.RestAssured.*;
+import static com.jayway.restassured.RestAssured.delete;
+import static com.jayway.restassured.RestAssured.get;
+import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,9 +44,9 @@ public class QuestionsVerticleIT {
     private static final int SC_OK = 200;
     private static final int SC_NO_CONTENT = 204;
     private static final int SC_NOT_FOUND = 404;
-    private static final String PROPERTY_VERSION = "version";
-    private static final String PROPERTY_QUESTION_ID = "questionId";
-    private static final String PROPERTY_QUESTION_TEXT = "text";
+    private static final String QUESTION_VERSION = "version";
+    private static final String QUESTION_ID = "questionId";
+    private static final String QUESTION_TEXT = "text";
     private static final String API_ENDPOINT_ALL = "/api/questions";
     private static final String API_PREFIX_ONE = "/api/questions/";
 
@@ -60,6 +62,7 @@ public class QuestionsVerticleIT {
     }
 
     @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.UseStringBufferForStringAppends"})
     public void crudTest() {
         String questionText = "Do you like testing? " + LocalDateTime.now();
 
@@ -82,9 +85,9 @@ public class QuestionsVerticleIT {
         get(API_PREFIX_ONE + question.getQuestionId()).then()
                 .assertThat()
                 .statusCode(SC_OK)
-                .body(PROPERTY_QUESTION_TEXT, equalTo(questionText))
-                .body(PROPERTY_QUESTION_ID, not(is(0L)))
-                .body(PROPERTY_VERSION, not(is(0L)));
+                .body(QUESTION_TEXT, equalTo(questionText))
+                .body(QUESTION_ID, not(is(0L)))
+                .body(QUESTION_VERSION, not(is(0L)));
 
         // update
         questionText += " (Updated)";
@@ -100,9 +103,9 @@ public class QuestionsVerticleIT {
         get(API_PREFIX_ONE + question.getQuestionId()).then()
                 .assertThat()
                 .statusCode(SC_OK)
-                .body(PROPERTY_QUESTION_TEXT, equalTo(questionText))
-                .body(PROPERTY_QUESTION_ID, not(is(0L)))
-                .body(PROPERTY_VERSION, not(is(0L)));
+                .body(QUESTION_TEXT, equalTo(questionText))
+                .body(QUESTION_ID, not(is(0L)))
+                .body(QUESTION_VERSION, not(is(0L)));
 
         // delete
         delete(API_PREFIX_ONE + question.getQuestionId()).then()
@@ -115,11 +118,11 @@ public class QuestionsVerticleIT {
 
     private static String createJSON(@NotNull final String text,
                                      final Long version) {
-        final StringBuilder json = new StringBuilder("{\"" + PROPERTY_QUESTION_TEXT + "\":\"" + text + "\"");
+        final StringBuilder json = new StringBuilder("{\"" + QUESTION_TEXT + "\":\"" + text + "\"");
         if (version != null) {
-            json.append(",\"").append(PROPERTY_VERSION).append("\":").append(version);
+            json.append(",\"").append(QUESTION_VERSION).append("\":").append(version);
         }
-        json.append("}");
+        json.append('}');
         return json.toString();
     }
 

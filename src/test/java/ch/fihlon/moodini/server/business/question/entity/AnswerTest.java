@@ -27,13 +27,31 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class AnswerTest {
 
+    private static final String ERROR_MESSAGE = "Got the wrong text for the answer!";
+
     @Test
-    public void getAnswer() {
-        assertThat(Answer.AMPED.getAnswer(), is("Amped"));
-        assertThat(Answer.GOOD.getAnswer(), is("Good"));
-        assertThat(Answer.FINE.getAnswer(), is("Fine"));
-        assertThat(Answer.MEH.getAnswer(), is("Meh"));
-        assertThat(Answer.PISSED.getAnswer(), is("Pissed"));
+    public void getAnswerAmped() {
+        assertThat(ERROR_MESSAGE, Answer.AMPED.getAnswer(), is("Amped"));
+    }
+
+    @Test
+    public void getAnswerGood() {
+        assertThat(ERROR_MESSAGE, Answer.GOOD.getAnswer(), is("Good"));
+    }
+
+    @Test
+    public void getAnswerFine() {
+        assertThat(ERROR_MESSAGE, Answer.FINE.getAnswer(), is("Fine"));
+    }
+
+    @Test
+    public void getAnswerMeh() {
+        assertThat(ERROR_MESSAGE, Answer.MEH.getAnswer(), is("Meh"));
+    }
+
+    @Test
+    public void getAnswerPissed() {
+        assertThat(ERROR_MESSAGE, Answer.PISSED.getAnswer(), is("Pissed"));
     }
 
 }

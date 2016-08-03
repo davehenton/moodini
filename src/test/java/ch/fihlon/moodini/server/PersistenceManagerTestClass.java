@@ -23,4 +23,7 @@ import java.io.Serializable;
  * Simple mock class used by the {@link PersistenceManagerTest}.
  */
 public class PersistenceManagerTestClass implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
 }

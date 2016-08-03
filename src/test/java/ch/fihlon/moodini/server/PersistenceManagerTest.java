@@ -46,8 +46,8 @@ public class PersistenceManagerTest {
         // arrange
         mockStatic(SimpleController.class);
         @SuppressWarnings("unchecked")
-        final SimpleController<Serializable> simpleControllerMock = mock(SimpleController.class);
-        when(SimpleController.loadOptional(anyObject(), anyObject())).thenReturn(simpleControllerMock);
+        final SimpleController<Serializable> controllerMock = mock(SimpleController.class);
+        when(SimpleController.loadOptional(anyObject(), anyObject())).thenReturn(controllerMock);
 
         // act
         final SimpleController<PersistenceManagerTestClass> simpleController =
@@ -55,7 +55,7 @@ public class PersistenceManagerTest {
                         PersistenceManagerTestClass.class, PersistenceManagerTestClass::new);
 
         // assert
-        assertThat(simpleController, is(simpleControllerMock));
+        assertThat("The PersistenceManager should return the mock object.", simpleController, is(controllerMock));
         verifyStatic(times(1));
         SimpleController.loadOptional(anyObject(), anyObject());
     }

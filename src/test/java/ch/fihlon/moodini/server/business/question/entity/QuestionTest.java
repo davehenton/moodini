@@ -45,17 +45,17 @@ public class QuestionTest {
 
     @Test
     public void getQuestionId() {
-        assertThat(question.getQuestionId(), is(QUESTION_ID));
+        assertThat("Got the wrong id!", question.getQuestionId(), is(QUESTION_ID));
     }
 
     @Test
     public void getVersion() {
-        assertThat(question.getVersion(), is(VERSION));
+        assertThat("Got the wrong version!", question.getVersion(), is(VERSION));
     }
 
     @Test
     public void getQuestion() {
-        assertThat(question.getText(), is(TEXT));
+        assertThat("Got the wrong text!", question.getText(), is(TEXT));
     }
 
 }
