@@ -6,6 +6,8 @@ jdk:
 services:
   - docker
 
+script: mvn test -P securityAndLicenseCheck
+
 after_success:
   - mvn jacoco:report coveralls:report docker:build
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
